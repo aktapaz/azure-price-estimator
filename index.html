@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Retail API Prices</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <img id="customLogo" src="logo.png" alt="Custom Logo" style="display: none;">
+    </header>
+    
+    <h1>Get Azure Retail Prices</h1>
+    
+    <label for="resourceType">Resource Type:</label>
+    <input type="text" id="resourceType" name="resourceType"><br><br>
+
+    <label for="region">Region:</label>
+    <input type="text" id="region" name="region"><br><br>
+
+    <label for="sku">SKU:</label>
+    <input type="text" id="sku" name="sku"><br><br>
+
+    <button id="getPricesBtn">Get Prices</button>
+    <button id="exportPricesBtn" style="display: none;">Export Prices</button>
+    <pre id="output"></pre>
+
+    <script>
+        let fetchedData = null;
+
+        document.getElementById('getPricesBtn').addEventListener('click', async () => {
+            const resourceType = document.getElementById('resourceType').value;
+            const region = document.getElementById('region').value;
+            const sku = document.getElementById('sku').value;
+
+            let queryParams = '';
+            if (resourceType) queryParams += `&resourceType=${encodeURIComponent(resourceType)}`;
+            if (region) queryParams += `&region=${encodeURIComponent(region)}`;
+            if (sku) queryParams += `&sku=${encodeURIComponent(sku)}`;
+
+            try {
+                const response = await fetch(`/api/GetRetailPrices?${queryParams}`);
+                const data = await response.json();
+                fetchedData = data;
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('exportPricesBtn').style.display = 'inline-block';
+            } catch (error) {
+                console.error('Error fetching prices:', error);
+                document.getElementById('output').textContent = 'Error fetching prices';
+            }
+        });
+
+        document.getElementById('exportPricesBtn').addEventListener('click', () => {
+            if (fetchedData) {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fetchedData, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "azure_retail_prices.json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            } else {
+                alert('No data to export');
+            }
+        });
+
+        // Function to set custom logo
+        function setCustomLogo(url) {
+            const logo = document.getElementById('customLogo');
+            logo.src = url;
+            logo.style.display = 'block';
+        }
+
+        // Example usage: setCustomLogo('https://example.com/mylogo.png');
+    </script>
+</body>
+</html>
