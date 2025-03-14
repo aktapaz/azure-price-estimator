@@ -41,7 +41,7 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   parent: blobServices
   name: 'blobstore'
   properties: {
-    publicAccess: 'Blob' // Allow anonymous access to blobs
+    publicAccess: 'None' 
   }
 }
 
@@ -94,10 +94,7 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
           name: 'AZURE_RETAIL_API_PRICES_ENDPOINT'
           value: 'https://prices.azure.com/api/retail/prices'
         }
-        {
-          name: 'WEBSITE_RUN_FROM_PACKAGE'
-          value: 'https://azretailprices.blob.core.windows.net/files/price-estimate.zip' // URL of the ZIP file
-        }
+        
       ]
       linuxFxVersion: 'DOTNET|6.0' // Specify the runtime stack for Linux
     }
