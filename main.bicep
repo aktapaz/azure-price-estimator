@@ -66,7 +66,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
   name: functionAppName
   location: location
-  kind: 'functionapp,linux' // Specify that the Function App is running on Linux
+  kind: 'functionapp'
   identity: {
     type: 'SystemAssigned'
   }
@@ -96,7 +96,7 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         }
         
       ]
-      linuxFxVersion: 'DOTNET|6.0' // Specify the runtime stack for Linux
+      linuxFxVersion: 'DOTNET' // Specify the runtime stack for Linux
     }
   }
   dependsOn: [
