@@ -145,7 +145,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2024-04-01' = {
     tier: 'Free'
   }
   properties: {
-    repositoryUrl: '<your-repository-url>'
+    repositoryUrl: 'https://github.com/aktapaz/azure-price-estimator'
     branch: 'main'
     buildProperties: {
       appLocation: '/'
