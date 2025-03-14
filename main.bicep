@@ -96,7 +96,6 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         }
         
       ]
-      linuxFxVersion: 'DOTNET' // Specify the runtime stack for Linux
     }
   }
   dependsOn: [
