@@ -8,7 +8,7 @@ param appServicePlanName string = 'az-retail-prices-plan'
 param location string = resourceGroup().location
 
 @description('The name of the Storage Account')
-param storageAccountName string = 'azretailprices'
+param storageAccountName string = 'azretailpricesstor'
 
 @description('The name of the Application Insights resource')
 param appInsightsName string = 'az-retail-prices-insights'
@@ -141,7 +141,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2024-04-01' = {
   name: staticWebAppName
   location: staticWebAppLocation
   sku: {
-    name: 'Free'
+    name: 'Free' 
     tier: 'Free'
   }
   properties: {
