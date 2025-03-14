@@ -76,6 +76,11 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
           name: 'AZURE_RETAIL_API_PRICES_ENDPOINT'
           value: 'https://prices.azure.com/api/retail/prices'
         }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: 'https://azretailprices.blob.core.windows.net/files/price-estimate.zip?sp=r&st=2025-03-14T14:17:23Z&se=2025-03-14T22:17:23Z&spr=https&sv=2022-11-02&sr=b&sig=x6H%2BoCtYsr5g3TwtkJd%2B938cbG1lOQdHZtcATOiPh14%3D' // URL of the ZIP file
+        }
+
       ]
     }
   }
