@@ -26,6 +26,23 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
+  properties: {
+    accessTier: 'Hot'
+  } 
+
+}
+
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01' = {
+  parent: storageAccount
+  name: 'default'
+}
+
+resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-05-01' = {
+  parent: blobServices
+  name: 'blobstore'
+  properties: {
+    publicAccess: 'Blob' // Allow anonymous access to blobs
+  }
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2024-04-01' = {
@@ -49,6 +66,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
   name: functionAppName
   location: location
+  kind: 'functionapp,linux' // Specify that the Function App is running on Linux
   identity: {
     type: 'SystemAssigned'
   }
@@ -78,15 +96,16 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
         }
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
-          value: 'https://azretailprices.blob.core.windows.net/files/price-estimate.zip?sp=r&st=2025-03-14T14:17:23Z&se=2025-03-14T22:17:23Z&spr=https&sv=2022-11-02&sr=b&sig=x6H%2BoCtYsr5g3TwtkJd%2B938cbG1lOQdHZtcATOiPh14%3D' // URL of the ZIP file
+          value: 'https://azretailprices.blob.core.windows.net/files/price-estimate.zip' // URL of the ZIP file
         }
-
       ]
+      linuxFxVersion: 'DOTNET|6.0' // Specify the runtime stack for Linux
     }
   }
   dependsOn: [
-    #disable-next-line no-unnecessary-dependson
+    #disable-next-line no-unnecessary-dependson  
     storageAccount
+    storageContainer
     #disable-next-line no-unnecessary-dependson
     appServicePlan
     #disable-next-line no-unnecessary-dependson
