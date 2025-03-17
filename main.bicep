@@ -28,8 +28,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   kind: 'StorageV2'
   properties: {
     accessTier: 'Hot'
-  } 
-
+  }
 }
 
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01' = {
@@ -41,7 +40,7 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   parent: blobServices
   name: 'blobstore'
   properties: {
-    publicAccess: 'None' 
+    publicAccess: 'Blob' // Allow anonymous access to blobs
   }
 }
 
@@ -66,7 +65,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
   name: functionAppName
   location: location
-  kind: 'functionapp'
+  kind: 'functionapp,linux' // Specify that the Function App is running on Linux
   identity: {
     type: 'SystemAssigned'
   }
@@ -94,12 +93,16 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
           name: 'AZURE_RETAIL_API_PRICES_ENDPOINT'
           value: 'https://prices.azure.com/api/retail/prices'
         }
-        
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: 'https://occdeploymentstorage.blob.core.windows.net/files/price-estimate.zip' // URL of the ZIP file
+        }
       ]
+      linuxFxVersion: 'DOTNET|6.0' // Specify the runtime stack for Linux
     }
   }
   dependsOn: [
-    #disable-next-line no-unnecessary-dependson  
+    #disable-next-line no-unnecessary-dependson
     storageAccount
     storageContainer
     #disable-next-line no-unnecessary-dependson
@@ -175,6 +178,15 @@ resource staticWebApp 'Microsoft.Web/staticSites@2024-04-01' = {
   dependsOn: [
     functionApp
   ]
+}
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(storageAccount.id, 'Storage Blob Data Reader', functionApp.id)
+  scope: storageAccount
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Reader role
+    principalId: functionApp.identity.principalId
+  }
 }
 
 output functionAppDefaultHostName string = functionApp.properties.defaultHostName
