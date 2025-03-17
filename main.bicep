@@ -40,7 +40,7 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   parent: blobServices
   name: 'blobstore'
   properties: {
-    publicAccess: 'None' // Allow anonymous access to blobs
+    publicAccess: 'None' // Remove anonymous access to blobs
   }
 }
 
@@ -65,7 +65,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
 resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
   name: functionAppName
   location: location
-  kind: 'functionapp,linux' // Specify that the Function App is running on Linux
+  kind: 'functionapp' // Remove Linux-specific kind
   identity: {
     type: 'SystemAssigned'
   }
@@ -98,7 +98,6 @@ resource functionApp 'Microsoft.Web/sites@2024-04-01' = {
           value: 'https://occdeploymentstorage.blob.core.windows.net/files/price-estimate.zip' // URL of the ZIP file
         }
       ]
-      linuxFxVersion: 'DOTNET|6.0' // Specify the runtime stack for Linux
     }
   }
   dependsOn: [
