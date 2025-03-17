@@ -40,7 +40,7 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   parent: blobServices
   name: 'blobstore'
   properties: {
-    publicAccess: 'Blob' // Allow anonymous access to blobs
+    publicAccess: 'None' // Allow anonymous access to blobs
   }
 }
 
