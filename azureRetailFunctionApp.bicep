@@ -19,10 +19,6 @@ param appServicePlanSku object = {
 @description('Specifies the Runtime Stack of the Function App.')
 param functionRuntime string = 'node'
 
-@description('Specifies the Retail API Subscription Key.')
-@secure()
-param retailApiSubscriptionKey string
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
   location: location
@@ -75,10 +71,6 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
           value: '~16'
-        }
-        {
-          name: 'RETAIL_API_SUBSCRIPTION_KEY'
-          value: retailApiSubscriptionKey
         }
         {
           name: 'RETAIL_API_ENDPOINT'
