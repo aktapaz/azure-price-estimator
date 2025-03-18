@@ -1,0 +1,14 @@
+{
+    "name": "azure-price-estimator-function",
+    "version": "1.0.0",
+    "description": "Function app to interact with Azure Retail API",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+      "node-fetch": "^2.6.7"
+    },
+    "author": "",
+    "license": "MIT"
+  }

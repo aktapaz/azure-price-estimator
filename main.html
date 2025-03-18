@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Price Estimator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Azure Price Estimator</h1>
+            <p>Estimate costs for your Azure resources</p>
+        </header>
+
+        <main>
+            <section class="search-section">
+                <h2>Search for Azure services</h2>
+                <div class="search-container">
+                    <div class="form-group">
+                        <label for="service-type">Service Type</label>
+                        <select id="service-type">
+                            <option value="" selected disabled>Select a service...</option>
+                            <option value="virtualmachines">Virtual Machines</option>
+                            <option value="storage">Storage Accounts</option>
+                            <option value="databases">Databases</option>
+                            <option value="appservice">App Services</option>
+                            <option value="networking">Networking</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="region">Region</label>
+                        <select id="region">
+                            <option value="" selected disabled>Select a region...</option>
+                            <option value="westus">West US</option>
+                            <option value="eastus">East US</option>
+                            <option value="westeurope">West Europe</option>
+                            <option value="northeurope">North Europe</option>
+                            <option value="eastasia">East Asia</option>
+                            <option value="southeastasia">Southeast Asia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="vm-size-container" style="display: none;">
+                        <label for="vm-size">VM Size</label>
+                        <select id="vm-size">
+                            <option value="Standard_B1s">B1s (1 vCPU, 1 GiB RAM)</option>
+                            <option value="Standard_B2s">B2s (2 vCPU, 4 GiB RAM)</option>
+                            <option value="Standard_D2s_v3">D2s v3 (2 vCPU, 8 GiB RAM)</option>
+                            <option value="Standard_D4s_v3">D4s v3 (4 vCPU, 16 GiB RAM)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="storage-type-container" style="display: none;">
+                        <label for="storage-type">Storage Type</label>
+                        <select id="storage-type">
+                            <option value="Standard_LRS">Standard Locally Redundant</option>
+                            <option value="Standard_ZRS">Standard Zone Redundant</option>
+                            <option value="Premium_LRS">Premium Locally Redundant</option>
+                        </select>
+                    </div>
+
+                    <button id="search-prices" class="btn">Get Pricing</button>
+                </div>
+            </section>
+
+            <section class="results-section">
+                <h2>Pricing Results</h2>
+                <div id="loading" class="hidden">
+                    <div class="loader"></div>
+                    <p>Fetching prices...</p>
+                </div>
+                <div id="error-message" class="hidden error">
+                    <p>An error occurred while fetching prices. Please try again.</p>
+                </div>
+                <div id="results-container">
+                    <table id="results-table" class="hidden">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>SKU</th>
+                                <th>Region</th>
+                                <th>Price (USD)</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-body">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Azure Price Estimator &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
