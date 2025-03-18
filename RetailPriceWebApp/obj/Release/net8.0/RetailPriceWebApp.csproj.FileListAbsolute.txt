@@ -1,0 +1,9 @@
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.csproj.AssemblyReference.cache
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.AssemblyInfoInputs.cache
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.AssemblyInfo.cs
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.csproj.CoreCompileInputs.cache
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.RazorAssemblyInfo.cache
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.RazorAssemblyInfo.cs
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.sourcelink.json

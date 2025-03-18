@@ -32,10 +32,10 @@
             @foreach (var price in Model.Prices)
             {
                 <tr>
-                    <td>@price.productName</td>
-                    <td>@price.meterName</td>
-                    <td>@price.retailPrice</td>
-                    <td>@price.unitOfMeasure</td>
+                    <td>@price.ProductName</td>
+                    <td>@price.MeterName</td>
+                    <td>@price.RetailPrice</td>
+                    <td>@price.UnitOfMeasure</td>
                 </tr>
             }
         </tbody>
@@ -45,3 +45,4 @@ else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.Pro
 {
     <p>No prices found for the specified filters.</p>
 }
+
