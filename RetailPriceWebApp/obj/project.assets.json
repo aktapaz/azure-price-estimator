@@ -5,7 +5,9 @@
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "Newtonsoft.Json >= 13.0.1"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\dezapc00\\.nuget\\packages\\": {},
@@ -33,6 +35,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {},
         "https://pkgs.dev.azure.com/IngramMicroCloudDe/_packaging/PartsUnlimitedShared/nuget/v3/index.json": {},
         "https://www.nuget.org/": {}
       },
@@ -57,6 +60,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -102,8 +111,8 @@
     {
       "code": "NU1301",
       "level": "Error",
-      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.NETCore.App.Host.win-x64\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Host.win-x64'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.NETCore.App.Host.win-x64"
+      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.AspNetCore.App.Ref\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.AspNetCore.App.Ref"
     },
     {
       "code": "NU1301",
@@ -120,8 +129,8 @@
     {
       "code": "NU1301",
       "level": "Error",
-      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.AspNetCore.App.Ref\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.AspNetCore.App.Ref"
+      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.NETCore.App.Host.win-x64\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Host.win-x64'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.NETCore.App.Host.win-x64"
     }
   ]
 }

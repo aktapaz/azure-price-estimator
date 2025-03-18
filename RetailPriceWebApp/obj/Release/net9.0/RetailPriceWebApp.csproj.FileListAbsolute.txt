@@ -1,0 +1,9 @@
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.AssemblyInfoInputs.cache
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.AssemblyInfo.cs
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.csproj.CoreCompileInputs.cache
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.RazorAssemblyInfo.cache
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.RazorAssemblyInfo.cs
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.sourcelink.json
+C:\Users\dezapc00\Repositories\azure-price-estimator\RetailPriceWebApp\obj\Release\net9.0\RetailPriceWebApp.csproj.AssemblyReference.cache
