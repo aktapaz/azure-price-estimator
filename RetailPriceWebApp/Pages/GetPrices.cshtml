@@ -1,20 +1,25 @@
-//// filepath: RetailPriceWebApp/Pages/GetPrices.cshtml
 @page
 @model GetPricesModel
 @{
     ViewData["Title"] = "Get Azure Retail Prices";
 }
 
-<h1>Get Azure Retail Prices</h1>
-<form method=""get"">
-    <label for=""skuName"">SKU Name:</label>
-    <input type=""text"" id=""skuName"" name=""skuName"" value=""@Model.SkuName"" />
-    <button type=""submit"">Get Prices</button>
+<h1>@ViewData["Title"]</h1>
+<form method="get">
+    <div>
+        <label for="skuName">SKU Name:</label>
+        <input type="text" id="skuName" name="skuName" value="@Model.SkuName" />
+    </div>
+    <div>
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="@Model.ProductName" />
+    </div>
+    <button type="submit">Get Prices</button>
 </form>
 
 @if (Model.Prices != null && Model.Prices.Any())
 {
-    <table class=""table"">
+    <table class="table">
         <thead>
             <tr>
                 <th>ProductName</th>
@@ -24,19 +29,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Prices)
+            @foreach (var price in Model.Prices)
             {
                 <tr>
-                    <td>@item.productName</td>
-                    <td>@item.meterName</td>
-                    <td>@item.retailPrice</td>
-                    <td>@item.unitOfMeasure</td>
+                    <td>@price.productName</td>
+                    <td>@price.meterName</td>
+                    <td>@price.retailPrice</td>
+                    <td>@price.unitOfMeasure</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else if (!string.IsNullOrEmpty(Model.SkuName))
+else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.ProductName))
 {
-    <p>No prices found.</p>
+    <p>No prices found for the specified filters.</p>
 }

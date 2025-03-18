@@ -1,21 +1,29 @@
-//// filepath: RetailPriceWebApp/Pages/GetPrices.cshtml.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 public class GetPricesModel : PageModel
 {
-    private readonly IHttpClientFactory _clientFactory;
-    private readonly IConfiguration _config;
-    private readonly ILogger<GetPricesModel> _logger;
+    // Use null-forgiving operator to satisfy compiler checks
+    private readonly IHttpClientFactory _clientFactory = null!;
+    private readonly IConfiguration _config = null!;
+    private readonly ILogger<GetPricesModel> _logger = null!;
 
-    public GetPricesModel(IHttpClientFactory clientFactory, IConfiguration config, ILogger<GetPricesModel> logger)
+    // Parameterless constructor for framework usage
+    public GetPricesModel()
+    {
+    }
+
+    // Main constructor assigns non-nullable fields
+    public GetPricesModel(
+        IHttpClientFactory clientFactory,
+        IConfiguration config,
+        ILogger<GetPricesModel> logger)
     {
         _clientFactory = clientFactory;
         _config = config;
@@ -23,7 +31,7 @@ public class GetPricesModel : PageModel
     }
 
     [BindProperty(SupportsGet = true)]
-    public string SkuName { get; set; }
+    public string SkuName { get; set; } = "";
 
     public List<PriceItem> Prices { get; set; } = new();
 
@@ -47,7 +55,7 @@ public class GetPricesModel : PageModel
             }
             catch (HttpRequestException ex)
             {
-                _logger.LogError(ex, ""API request failed"");
+                _logger.LogError(ex, "API request failed");
             }
         }
     }
@@ -55,21 +63,21 @@ public class GetPricesModel : PageModel
 
 public class RetailApiResult
 {
-    [JsonProperty(""-Items"")]
-    public List<PriceItem> Items { get; set; }
+    [JsonProperty("Items")]
+    public List<PriceItem> Items { get; set; } = new();
 }
 
 public class PriceItem
 {
-    [JsonProperty(""productName"")]
+    [JsonProperty("productName")]
     public string productName { get; set; }
 
-    [JsonProperty(""meterName"")]
+    [JsonProperty("meterName")]
     public string meterName { get; set; }
 
-    [JsonProperty(""retailPrice"")]
+    [JsonProperty("retailPrice")]
     public decimal retailPrice { get; set; }
 
-    [JsonProperty(""unitOfMeasure"")]
+    [JsonProperty("unitOfMeasure")]
     public string unitOfMeasure { get; set; }
 }
