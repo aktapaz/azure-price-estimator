@@ -1,0 +1,42 @@
+//// filepath: RetailPriceWebApp/Pages/GetPrices.cshtml
+@page
+@model GetPricesModel
+@{
+    ViewData["Title"] = "Get Azure Retail Prices";
+}
+
+<h1>Get Azure Retail Prices</h1>
+<form method=""get"">
+    <label for=""skuName"">SKU Name:</label>
+    <input type=""text"" id=""skuName"" name=""skuName"" value=""@Model.SkuName"" />
+    <button type=""submit"">Get Prices</button>
+</form>
+
+@if (Model.Prices != null && Model.Prices.Any())
+{
+    <table class=""table"">
+        <thead>
+            <tr>
+                <th>ProductName</th>
+                <th>MeterName</th>
+                <th>RetailPrice</th>
+                <th>UnitOfMeasure</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Prices)
+            {
+                <tr>
+                    <td>@item.productName</td>
+                    <td>@item.meterName</td>
+                    <td>@item.retailPrice</td>
+                    <td>@item.unitOfMeasure</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (!string.IsNullOrEmpty(Model.SkuName))
+{
+    <p>No prices found.</p>
+}
