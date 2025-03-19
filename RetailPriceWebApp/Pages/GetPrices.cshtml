@@ -48,10 +48,7 @@
         <thead>
             <tr>
                 <th>Product Name</th>
-                <th>SKU</th>
-                <th>Region</th>
-                <th>Monthly Cost</th>
-                <th>Unit Price</th>
+
             </tr>
         </thead>
         <tbody>
@@ -60,9 +57,14 @@
                 <tr>
                     <td>@price.ProductName</td>
                     <td>@price.SkuName</td>
+
                     <td>@price.Location</td>
                     <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
                     <td>@price.RetailPrice.ToString("C")/hour</td>
+=======
+                    <td>@price.RetailPrice</td>
+                    <td>@price.CurrencyCode</td>
+
                 </tr>
             }
         </tbody>
@@ -70,6 +72,8 @@
 }
 else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.Region))
 {
+
     <p class="alert alert-info">No prices found for the specified filters.</p>
+
 }
 

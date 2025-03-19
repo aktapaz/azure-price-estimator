@@ -45,6 +45,7 @@
         "packageIcon.png"
       ]
     }
+
   },
     "net8.0": {
       "Newtonsoft.Json/13.0.1": {
@@ -90,19 +91,10 @@
         "packageIcon.png"
       ]
     }
-  },
-  "projectFileDependencyGroups": {
-    "net8.0": [
-      "Newtonsoft.Json >= 13.0.1"
-    ]
-  },
-  "packageFolders": {
+=======
+
+
     "C:\\Users\\username\\.nuget\\packages\\": {}
-    "C:\\Users\\username\\.nuget\\packages\\": {}
-  },
-  "project": {
-    "version": "1.0.0",
-    "restore": {
       "projectUniqueName": "C:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
       "projectName": "RetailPriceWebApp",
       "projectPath": "C:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
@@ -112,87 +104,36 @@
       "configFilePaths": [
         "C:\\Users\\username\\AppData\\Roaming\\NuGet\\NuGet.Config"
         "C:\\Users\\username\\AppData\\Roaming\\NuGet\\NuGet.Config"
-      ],
-      "originalTargetFrameworks": [
-        "net8.0"
-      ],
-      "sources": {
+      "projectUniqueName": "c:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
+      "projectName": "RetailPriceWebApp",
+      "projectPath": "c:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
+      "packagesPath": "C:\\Users\\username\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\username\\AppData\\Roaming\\NuGet\\NuGet.Config"
+
         "https://api.nuget.org/v3/index.json": {}
-        "https://api.nuget.org/v3/index.json": {}
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "projectReferences": {}
-        }
-      },
-      "warningProperties": {
-        "warnAsError": [
-          "NU1605"
-        ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
-      },
+
       "SdkAnalysisLevel": "9.0.200"
-      "SdkAnalysisLevel": "9.0.200"
-    },
-    "frameworks": {
-      "net8.0": {
-        "targetAlias": "net8.0",
-        "dependencies": {
-          "Newtonsoft.Json": {
-            "target": "Package",
-            "version": "[13.0.1, )"
-          }
-        },
-        "imports": [
-          "net461",
-          "net462",
-          "net47",
-          "net471",
-          "net472",
-          "net48",
-          "net481"
-        ],
-        "assetTargetFallback": true,
-        "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
+
             "version": "[8.0.14, 8.0.14]"
+
+
             "version": "[8.0.14, 8.0.14]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
+
             "version": "[8.0.14, 8.0.14]"
+
             "version": "[8.0.14, 8.0.14]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.14, 8.0.14]"
-            "version": "[8.0.14, 8.0.14]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.14, 8.0.14]"
-            "version": "[8.0.14, 8.0.14]"
-          }
-        ],
-        "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
-          "Microsoft.NETCore.App": {
-            "privateAssets": "all"
-          }
-        },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
   }
+
+      }
+    }
+  }
+
 }

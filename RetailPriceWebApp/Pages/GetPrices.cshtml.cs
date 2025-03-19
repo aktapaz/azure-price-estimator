@@ -1,22 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
+using RetailPriceWebApp.Models;
 
-public class GetPricesModel : PageModel
+namespace RetailPriceWebApp.Pages
 {
     private readonly IHttpClientFactory _clientFactory = null!;
     private readonly IConfiguration _config = null!;
     private readonly ILogger<GetPricesModel> _logger = null!;
 
-    // ...existing code...
+    public class GetPricesModel(IConfiguration config) : PageModel
+    {
+        private readonly IConfiguration _config = config;
 
-    [BindProperty(SupportsGet = true)]
-    public string SkuName { get; set; } = "";
+        [BindProperty(SupportsGet = true)]
+        public string SkuName { get; set; } = string.Empty;
 
     [BindProperty(SupportsGet = true)]
     public string Region { get; set; } = "";
@@ -48,18 +45,28 @@ public class GetPricesModel : PageModel
 
             var client = _clientFactory.CreateClient();
             try
-            {
-                var response = await client.GetAsync(requestUri);
-                response.EnsureSuccessStatusCode();
-                var jsonString = await response.Content.ReadAsStringAsync();
 
-                var result = JsonConvert.DeserializeObject<RetailApiResult>(jsonString);
-                Prices = result?.Items ?? new List<PriceItem>();
-            }
-            catch (HttpRequestException ex)
-            {
-                _logger.LogError(ex, "API request failed");
-            }
-        }
+        public List<PriceItem> Prices { get; set; } = new();
+
+        public async Task OnGetAsync()
+        {
+            if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(ProductName))
+
+  }
+}
+
+namespace RetailPriceWebApp.Models
+{
+    public class PriceItem
+    {
+        public string SkuName { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
+        public decimal RetailPrice { get; set; }
+        public string CurrencyCode { get; set; } = string.Empty;
+    }
+
+    public class PriceResponse
+    {
+        public List<PriceItem> Items { get; set; } = new();
     }
 }
