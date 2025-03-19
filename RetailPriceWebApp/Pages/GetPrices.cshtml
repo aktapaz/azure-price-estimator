@@ -5,43 +5,71 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-<form method="get">
-    <div>
-        <label for="skuName">SKU Name:</label>
-        <input type="text" id="skuName" name="skuName" value="@Model.SkuName" />
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-6">
+<label for="region" class="form-label">Region:</label>
+            <select class="form-select" id="region" name="region" value="@Model.Region">
+                <option value="">Select Region</option>
+                <option value="westeurope">West Europe</option>
+                <option value="northeurope">North Europe</option>
+                <option value="germanywestcentral">Germany West Central</option>
+                <option value="germanynorth">Germany North</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="serviceType" class="form-label">Type:</label>
+            <select class="form-select" id="serviceType" name="serviceType" value="@Model.ServiceType">
+                <option value="">Select Type</option>
+                <option value="Compute">Compute</option>
+                <option value="Storage">Storage</option>
+                <option value="Networking">Networking</option>
+                <option value="Databases">Databases</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="skuName" class="form-label">SKU Name:</label>
+            <input type="text" class="form-control" id="skuName" name="skuName" value="@Model.SkuName" />
+        </div>
+        <div class="col-md-6">
+            <label for="usageHours" class="form-label">Usage Hours:</label>
+            <input type="number" class="form-control" id="usageHours" name="usageHours" 
+                   value="@Model.UsageHours" min="1" max="744" placeholder="Hours per month" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Get Prices</button>
+        </div>
     </div>
-    <div>
-        <label for="productName">Product Name:</label>
-        <input type="text" id="productName" name="productName" value="@Model.ProductName" />
-    </div>
-    <button type="submit">Get Prices</button>
 </form>
 
 @if (Model.Prices != null && Model.Prices.Any())
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>ProductName</th>
-                <th>MeterName</th>
-                <th>RetailPrice</th>
-                <th>UnitOfMeasure</th>
+                <th>Product Name</th>
+                <th>SKU</th>
+                <th>Region</th>
+                <th>Monthly Cost</th>
+                <th>Unit Price</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var price in Model.Prices)
             {
                 <tr>
-                    <td>@price.productName</td>
-                    <td>@price.meterName</td>
-                    <td>@price.retailPrice</td>
-                    <td>@price.unitOfMeasure</td>
+                    <td>@price.ProductName</td>
+                    <td>@price.SkuName</td>
+                    <td>@price.Location</td>
+                    <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
+                    <td>@price.RetailPrice.ToString("C")/hour</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.ProductName))
+else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.Region))
 {
-    <p>No prices found for the specified filters.</p>
+    <p class="alert alert-info">No prices found for the specified filters.</p>
 }
+

@@ -1,0 +1,8 @@
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\RetailPriceWebApp.exe
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\appsettings.Development.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\appsettings.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\RetailPriceWebApp.dll
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\RetailPriceWebApp.deps.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\RetailPriceWebApp.runtimeconfig.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\RetailPriceWebApp.pdb
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\publish\Newtonsoft.Json.dll

@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/28c4139c-e6ed-423a-a670-811279c084c5/resourceGroups/estimate-price-rg/providers/Microsoft.Web/sites/myretailpricewebapp",
+    "appService.deploySubpath": "RetailPriceWebApp\\publish"
+}
