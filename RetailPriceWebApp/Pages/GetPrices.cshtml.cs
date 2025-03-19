@@ -28,6 +28,7 @@ public class GetPricesModel : PageModel
     public int UsageHours { get; set; } = 730; // Default to average hours in a month
 
         public List<PriceItem> Prices { get; set; } = new();
+        public List<PriceItem> Prices { get; set; } = new();
 
     public async Task OnGetAsync()
     {
