@@ -8,26 +8,26 @@
     {
       "code": "NU1301",
       "level": "Error",
-      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.AspNetCore.App.Ref\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.AspNetCore.App.Ref"
+      "message": "Failed to retrieve information about 'Microsoft.NETCore.App.Host.win-x64' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Host.win-x64'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.NETCore.App.Host.win-x64"
     },
     {
       "code": "NU1301",
       "level": "Error",
-      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.NETCore.App.Ref\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Ref'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "message": "Failed to retrieve information about 'Microsoft.NETCore.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
       "libraryId": "Microsoft.NETCore.App.Ref"
     },
     {
       "code": "NU1301",
       "level": "Error",
-      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.WindowsDesktop.App.Ref\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.WindowsDesktop.App.Ref'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.WindowsDesktop.App.Ref"
+      "message": "Failed to retrieve information about 'Microsoft.AspNetCore.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.AspNetCore.App.Ref"
     },
     {
       "code": "NU1301",
       "level": "Error",
-      "message": "Fehler beim Abrufen von Informationen zu \"Microsoft.NETCore.App.Host.win-x64\" aus der Remotequelle \"https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Host.win-x64'&semVerLevel=2.0.0\".\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.NETCore.App.Host.win-x64"
+      "message": "Failed to retrieve information about 'Microsoft.WindowsDesktop.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.WindowsDesktop.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref"
     }
   ]
 }
