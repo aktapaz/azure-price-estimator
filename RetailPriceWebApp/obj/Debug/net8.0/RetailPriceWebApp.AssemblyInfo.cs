@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RetailPriceWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+820453a6bc764bb7b066f2a5b886c9c9876f331e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77b5ff368fb2ba39e66607d4822c3eb9b43af590")]
 [assembly: System.Reflection.AssemblyProductAttribute("RetailPriceWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RetailPriceWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
