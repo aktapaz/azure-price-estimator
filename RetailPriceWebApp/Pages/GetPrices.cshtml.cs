@@ -1,19 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using RetailPriceWebApp.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-namespace RetailPriceWebApp.Pages
+public class GetPricesModel : PageModel
 {
     private readonly IHttpClientFactory _clientFactory = null!;
     private readonly IConfiguration _config = null!;
     private readonly ILogger<GetPricesModel> _logger = null!;
 
-    public class GetPricesModel(IConfiguration config) : PageModel
-    {
-        private readonly IConfiguration _config = config;
+    // ...existing code...
 
-        [BindProperty(SupportsGet = true)]
-        public string SkuName { get; set; } = string.Empty;
+    [BindProperty(SupportsGet = true)]
+    public string SkuName { get; set; } = "";
 
     [BindProperty(SupportsGet = true)]
     public string Region { get; set; } = "";
@@ -24,6 +27,7 @@ namespace RetailPriceWebApp.Pages
     [BindProperty(SupportsGet = true)]
     public int UsageHours { get; set; } = 730; // Default to average hours in a month
 
+        public List<PriceItem> Prices { get; set; } = new();
         public List<PriceItem> Prices { get; set; } = new();
 
     public async Task OnGetAsync()
@@ -45,28 +49,18 @@ namespace RetailPriceWebApp.Pages
 
             var client = _clientFactory.CreateClient();
             try
+            {
+                var response = await client.GetAsync(requestUri);
+                response.EnsureSuccessStatusCode();
+                var jsonString = await response.Content.ReadAsStringAsync();
 
-        public List<PriceItem> Prices { get; set; } = new();
-
-        public async Task OnGetAsync()
-        {
-            if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(ProductName))
-
-  }
-}
-
-namespace RetailPriceWebApp.Models
-{
-    public class PriceItem
-    {
-        public string SkuName { get; set; } = string.Empty;
-        public string ProductName { get; set; } = string.Empty;
-        public decimal RetailPrice { get; set; }
-        public string CurrencyCode { get; set; } = string.Empty;
-    }
-
-    public class PriceResponse
-    {
-        public List<PriceItem> Items { get; set; } = new();
+                var result = JsonConvert.DeserializeObject<RetailApiResult>(jsonString);
+                Prices = result?.Items ?? new List<PriceItem>();
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "API request failed");
+            }
+        }
     }
 }
