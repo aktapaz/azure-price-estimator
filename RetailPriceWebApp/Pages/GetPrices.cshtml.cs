@@ -6,30 +6,10 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using RetailPriceWebApp.Models;
 
 namespace RetailPriceWebApp.Pages
 {
-    public class PriceItem
-    {
-        [JsonProperty("productName")]
-        public string productName { get; set; } = "";
-
-        [JsonProperty("meterName")]
-        public string meterName { get; set; } = "";
-
-        [JsonProperty("retailPrice")]
-        public decimal retailPrice { get; set; }
-
-        [JsonProperty("unitOfMeasure")]
-        public string unitOfMeasure { get; set; } = "";
-
-        [JsonProperty("location")]
-        public string location { get; set; } = "";
-
-        [JsonProperty("serviceFamily")]
-        public string serviceFamily { get; set; } = "";
-    }
-
     public class RetailApiResult
     {
         [JsonProperty("Items")]
