@@ -1,5 +1,35 @@
 {
   "version": 2,
+  "dgSpecHash": "/PQn/uJ5dfI=",
+  "success": false,
+  "projectFilePath": "C:\\Users\\dezapc00\\Repositories\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.NETCore.App.Host.win-x64' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Host.win-x64'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.NETCore.App.Host.win-x64"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.NETCore.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.NETCore.App.Ref"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.WindowsDesktop.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.WindowsDesktop.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.AspNetCore.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.AspNetCore.App.Ref"
+    }
+  ]
   "dgSpecHash": "q8I0f2/wnDM=",
   "success": true,
   "projectFilePath": "C:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
