@@ -1,5 +1,4 @@
-﻿Layout.cshtml
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,11 +30,23 @@
             </div>
         </nav>
     </header>
-    // ...existing code...
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - Azure Price Estimator - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
-    // ...existing code...
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
 </html>
