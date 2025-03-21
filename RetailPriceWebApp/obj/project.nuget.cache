@@ -1,15 +1,21 @@
 {
   "version": 2,
-  "dgSpecHash": "/PQn/uJ5dfI=",
+  "dgSpecHash": "gSAtXp1jd84=",
   "success": false,
   "projectFilePath": "C:\\Users\\dezapc00\\Repositories\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
   "expectedPackageFiles": [],
   "logs": [
     {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\dezapc00\\Repositories\\azure-price-estimator\\RetailPriceWebApp\\obj\\project.nuget.cache : After parsing a value an unexpected character was encountered: \". Path 'logs', line 33, position 2."
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.WindowsDesktop.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.WindowsDesktop.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.AspNetCore.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.AspNetCore.App.Ref"
     },
     {
       "code": "NU1301",
@@ -22,18 +28,6 @@
       "level": "Error",
       "message": "Failed to retrieve information about 'Microsoft.NETCore.App.Host.win-x64' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.NETCore.App.Host.win-x64'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
       "libraryId": "Microsoft.NETCore.App.Host.win-x64"
-    },
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "Failed to retrieve information about 'Microsoft.WindowsDesktop.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.WindowsDesktop.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.WindowsDesktop.App.Ref"
-    },
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "Failed to retrieve information about 'Microsoft.AspNetCore.App.Ref' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.App.Ref'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
-      "libraryId": "Microsoft.AspNetCore.App.Ref"
     }
   ]
 }
