@@ -35,3 +35,9 @@ C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\ref
 C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.pdb
 C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\RetailPriceWebApp.genruntimeconfig.cache
 C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Release\net8.0\ref\RetailPriceWebApp.dll
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Release\net8.0\publish\web.config
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Release\net8.0\publish\appsettings.Development.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Release\net8.0\publish\appsettings.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Release\net8.0\publish\RetailPriceWebApp.deps.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Release\net8.0\publish\RetailPriceWebApp.runtimeconfig.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Release\net8.0\publish\RetailPriceWebApp.staticwebassets.endpoints.json
