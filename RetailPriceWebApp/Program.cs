@@ -1,24 +1,23 @@
-//// filepath: RetailPriceWebApp/Program.cs
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
 builder.Services.AddRazorPages();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("AzureRetailPrices", client =>
+{
+    client.BaseAddress = new Uri("https://prices.azure.com/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+// Configure logging
+builder.Services.AddLogging(logging =>
+{
+    logging.AddConsole();
+    logging.AddDebug();
+});
 
 var app = builder.Build();
 
-
-builder.Services.AddHttpClient("AzureRetailPrices", client =>
-{
-    client.BaseAddress = new Uri("https://prices.azure.com/api/retail/prices");
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-    client.DefaultRequestHeaders.Add("User-Agent", "Azure-Price-Estimator");
-});
-
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

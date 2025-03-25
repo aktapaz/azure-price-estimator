@@ -41,3 +41,15 @@ C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Debug\net8.0\refin
 C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Debug\net8.0\RetailPriceWebApp.pdb
 C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Debug\net8.0\RetailPriceWebApp.genruntimeconfig.cache
 C:\Users\username\azure-price-estimator\RetailPriceWebApp\obj\Debug\net8.0\ref\RetailPriceWebApp.dll
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\publish\web.config
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\web.config
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\appsettings.Development.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\appsettings.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\publish\appsettings.Development.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\publish\appsettings.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\publish\RetailPriceWebApp.deps.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\publish\RetailPriceWebApp.runtimeconfig.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\publish\RetailPriceWebApp.staticwebassets.endpoints.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\RetailPriceWebApp.deps.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\RetailPriceWebApp.runtimeconfig.json
+C:\Users\username\azure-price-estimator\RetailPriceWebApp\bin\Debug\net8.0\publish\publish\RetailPriceWebApp.staticwebassets.endpoints.json
