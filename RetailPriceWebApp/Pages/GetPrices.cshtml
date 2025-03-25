@@ -8,33 +8,37 @@
 <form method="get" class="mb-4">
     <div class="row g-3">
         <div class="col-md-6">
-<label for="region" class="form-label">Region:</label>
-            <select class="form-select" id="region" name="region" value="@Model.Region">
+            <label for="region" class="form-label">Region:</label>
+            <select class="form-select" id="region" name="region" asp-for="Region">
                 <option value="">Select Region</option>
-                <option value="westeurope">West Europe</option>
-                <option value="northeurope">North Europe</option>
-                <option value="germanywestcentral">Germany West Central</option>
-                <option value="germanynorth">Germany North</option>
+                <option value="westeurope">EU West</option>
+                <option value="northeurope">EU North</option>
+                <option value="germanynorth">DE North</option>
+                <option value="germanywestcentral">DE West Central</option>
             </select>
         </div>
         <div class="col-md-6">
-            <label for="serviceType" class="form-label">Type:</label>
-            <select class="form-select" id="serviceType" name="serviceType" value="@Model.ServiceType">
-                <option value="">Select Type</option>
-                <option value="Compute">Compute</option>
+            <label for="serviceName" class="form-label">Service Name:</label>
+            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
+                <option value="">Select Service</option>
+                <option value="Virtual Machines">Virtual Machines</option>
                 <option value="Storage">Storage</option>
                 <option value="Networking">Networking</option>
                 <option value="Databases">Databases</option>
             </select>
         </div>
         <div class="col-md-6">
-            <label for="skuName" class="form-label">SKU Name:</label>
-            <input type="text" class="form-control" id="skuName" name="skuName" value="@Model.SkuName" />
+            <label for="billingCurrency" class="form-label">Currency:</label>
+            <select class="form-select" id="billingCurrency" name="billingCurrency" asp-for="BillingCurrency">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+            </select>
         </div>
         <div class="col-md-6">
             <label for="usageHours" class="form-label">Usage Hours:</label>
             <input type="number" class="form-control" id="usageHours" name="usageHours" 
-                   value="@Model.UsageHours" min="1" max="744" placeholder="Hours per month" />
+                   asp-for="UsageHours" min="1" max="744" placeholder="Hours per month" />
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Get Prices</button>
@@ -68,8 +72,7 @@
         </tbody>
     </table>
 }
-else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.Region))
+else if (!string.IsNullOrEmpty(Model.Region) || !string.IsNullOrEmpty(Model.ServiceName))
 {
     <p class="alert alert-info">No prices found for the specified filters.</p>
 }
-
