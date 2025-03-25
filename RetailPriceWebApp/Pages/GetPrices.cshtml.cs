@@ -8,6 +8,7 @@ namespace RetailPriceWebApp.Pages
 {
     public class RetailApiResult
     {
+        [JsonProperty("Items")]
         public List<PriceItem> Items { get; set; } = new();
     }
 
@@ -28,27 +29,26 @@ namespace RetailPriceWebApp.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public string SkuName { get; set; } = "";
+        public string SkuName { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string Region { get; set; } = "";
+        public string Region { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string ServiceType { get; set; } = "";
+        public string ServiceType { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
         public int UsageHours { get; set; } = 730;
 
         public List<PriceItem> Prices { get; set; } = new();
 
-                public async Task OnGetAsync()
+        public async Task OnGetAsync()
         {
             if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(Region) || !string.IsNullOrWhiteSpace(ServiceType))
             {
                 try
                 {
-                    var client = _clientFactory.CreateClient();
-                    client.BaseAddress = new Uri("https://prices.azure.com/");
+                    var client = _clientFactory.CreateClient("AzureRetailPrices");
                     
                     var filters = new List<string>();
                     
@@ -60,12 +60,19 @@ namespace RetailPriceWebApp.Pages
                         filters.Add($"serviceFamily eq '{ServiceType}'");
 
                     var filter = string.Join(" and ", filters);
-                    var requestUri = $"api/retail/prices?$filter={filter}&api-version=2023-03-01-preview";
+                    var requestUri = $"https://prices.azure.com/api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
 
                     _logger.LogInformation($"Requesting prices with URI: {requestUri}");
 
-                    var response = await client.GetAsync(requestUri);
-                    response.EnsureSuccessStatusCode();
+                    using var response = await client.GetAsync(requestUri);
+                    
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        _logger.LogError($"API request failed with status {response.StatusCode}: {errorContent}");
+                        ModelState.AddModelError("", $"Failed to retrieve prices. Status: {response.StatusCode}");
+                        return;
+                    }
                     
                     var jsonString = await response.Content.ReadAsStringAsync();
                     _logger.LogDebug($"Received response: {jsonString}");
@@ -78,7 +85,10 @@ namespace RetailPriceWebApp.Pages
                         return;
                     }
 
-                    Prices = result.Items;
+                    Prices = result.Items
+                        .OrderBy(p => p.ServiceFamily)
+                        .ThenBy(p => p.SkuName)
+                        .ToList();
                 }
                 catch (HttpRequestException ex)
                 {
@@ -89,6 +99,11 @@ namespace RetailPriceWebApp.Pages
                 {
                     _logger.LogError(ex, "Failed to parse API response");
                     ModelState.AddModelError("", $"Failed to process the price data: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Unexpected error occurred");
+                    ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
                 }
             }
         }
