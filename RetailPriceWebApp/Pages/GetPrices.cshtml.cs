@@ -35,7 +35,10 @@ namespace RetailPriceWebApp.Pages
         public string Region { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string ServiceType { get; set; } = string.Empty;
+        public string ServiceName { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string BillingCurrency { get; set; } = "EUR";
 
         [BindProperty(SupportsGet = true)]
         public int UsageHours { get; set; } = 730;
@@ -44,7 +47,8 @@ namespace RetailPriceWebApp.Pages
 
         public async Task OnGetAsync()
         {
-            if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(Region) || !string.IsNullOrWhiteSpace(ServiceType))
+            if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(Region) || 
+                !string.IsNullOrWhiteSpace(ServiceName))
             {
                 try
                 {
@@ -56,8 +60,10 @@ namespace RetailPriceWebApp.Pages
                         filters.Add($"startswith(skuName,'{SkuName}')");
                     if (!string.IsNullOrWhiteSpace(Region))
                         filters.Add($"location eq '{Region}'");
-                    if (!string.IsNullOrWhiteSpace(ServiceType))
-                        filters.Add($"serviceFamily eq '{ServiceType}'");
+                    if (!string.IsNullOrWhiteSpace(ServiceName))
+                        filters.Add($"serviceName eq '{ServiceName}'");
+                    if (!string.IsNullOrWhiteSpace(BillingCurrency))
+                        filters.Add($"currencyCode eq '{BillingCurrency}'");
 
                     var filter = string.Join(" and ", filters);
                     var requestUri = $"https://prices.azure.com/api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
@@ -86,6 +92,7 @@ namespace RetailPriceWebApp.Pages
                     }
 
                     Prices = result.Items
+                        .Where(p => p.RetailPrice > 0)
                         .OrderBy(p => p.ServiceFamily)
                         .ThenBy(p => p.SkuName)
                         .ToList();
