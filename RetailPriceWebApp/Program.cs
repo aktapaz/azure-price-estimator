@@ -11,6 +11,14 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
+
+builder.Services.AddHttpClient("AzureRetailPrices", client =>
+{
+    client.BaseAddress = new Uri("https://prices.azure.com/api/retail/prices");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.DefaultRequestHeaders.Add("User-Agent", "Azure-Price-Estimator");
+});
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

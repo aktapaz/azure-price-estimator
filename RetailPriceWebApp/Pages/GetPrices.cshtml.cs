@@ -1,18 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using RetailPriceWebApp.Models;
+using System.Net.Http;
 
 namespace RetailPriceWebApp.Pages
 {
     public class RetailApiResult
     {
-        [JsonProperty("Items")]
         public List<PriceItem> Items { get; set; } = new();
     }
 
@@ -22,7 +17,6 @@ namespace RetailPriceWebApp.Pages
         private readonly IConfiguration _config;
         private readonly ILogger<GetPricesModel> _logger;
 
-        // Constructor with dependency injection
         public GetPricesModel(
             IHttpClientFactory clientFactory,
             IConfiguration config,
@@ -45,39 +39,56 @@ namespace RetailPriceWebApp.Pages
         [BindProperty(SupportsGet = true)]
         public int UsageHours { get; set; } = 730;
 
-        // Single declaration of Prices property
         public List<PriceItem> Prices { get; set; } = new();
 
-        public async Task OnGetAsync()
+                public async Task OnGetAsync()
         {
             if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(Region) || !string.IsNullOrWhiteSpace(ServiceType))
             {
-                var endpoint = _config["AZURE_RETAIL_API_ENDPOINT"] ?? "https://prices.azure.com/api/retail/prices";
-                var filters = new List<string>();
-                
-                if (!string.IsNullOrWhiteSpace(SkuName))
-                    filters.Add($"startswith(skuName,'{SkuName}')");
-                if (!string.IsNullOrWhiteSpace(Region))
-                    filters.Add($"location eq '{Region}'");
-                if (!string.IsNullOrWhiteSpace(ServiceType))
-                    filters.Add($"serviceFamily eq '{ServiceType}'");
-
-                var filter = string.Join(" and ", filters);
-                var requestUri = $"{endpoint}?$filter={filter}&api-version=2023-03-01-preview";
-
-                var client = _clientFactory.CreateClient();
                 try
                 {
+                    var client = _clientFactory.CreateClient();
+                    client.BaseAddress = new Uri("https://prices.azure.com/");
+                    
+                    var filters = new List<string>();
+                    
+                    if (!string.IsNullOrWhiteSpace(SkuName))
+                        filters.Add($"startswith(skuName,'{SkuName}')");
+                    if (!string.IsNullOrWhiteSpace(Region))
+                        filters.Add($"location eq '{Region}'");
+                    if (!string.IsNullOrWhiteSpace(ServiceType))
+                        filters.Add($"serviceFamily eq '{ServiceType}'");
+
+                    var filter = string.Join(" and ", filters);
+                    var requestUri = $"api/retail/prices?$filter={filter}&api-version=2023-03-01-preview";
+
+                    _logger.LogInformation($"Requesting prices with URI: {requestUri}");
+
                     var response = await client.GetAsync(requestUri);
                     response.EnsureSuccessStatusCode();
+                    
                     var jsonString = await response.Content.ReadAsStringAsync();
+                    _logger.LogDebug($"Received response: {jsonString}");
 
                     var result = JsonConvert.DeserializeObject<RetailApiResult>(jsonString);
-                    Prices = result?.Items ?? new List<PriceItem>();
+                    
+                    if (result?.Items == null || !result.Items.Any())
+                    {
+                        ModelState.AddModelError("", "No prices found for the specified criteria.");
+                        return;
+                    }
+
+                    Prices = result.Items;
                 }
                 catch (HttpRequestException ex)
                 {
-                    _logger.LogError(ex, "API request failed");
+                    _logger.LogError(ex, "Failed to retrieve prices from Azure Retail Prices API");
+                    ModelState.AddModelError("", $"Failed to retrieve prices: {ex.Message}");
+                }
+                catch (JsonException ex)
+                {
+                    _logger.LogError(ex, "Failed to parse API response");
+                    ModelState.AddModelError("", $"Failed to process the price data: {ex.Message}");
                 }
             }
         }
