@@ -27,6 +27,11 @@
                 <option value="Databases">Databases</option>
             </select>
         </div>
+                <div class="col-md-6"></div>
+            <label for="skuName" class="form-label">SKU Name:</label>
+            <input type="text" class="form-control" id="skuName" name="skuName" 
+                   asp-for="SkuName" placeholder="Enter SKU name" />
+        </div>
         <div class="col-md-6">
             <label for="billingCurrency" class="form-label">Currency:</label>
             <select class="form-select" id="billingCurrency" name="billingCurrency" asp-for="BillingCurrency">
