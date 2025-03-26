@@ -14,7 +14,8 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins("https://prices.azure.com")
-                   .AllowAnyMethod()
+                   .WithMethods("GET")
+                   .WithHeaders("Accept")
                    .AllowAnyHeader();
         });
 });
