@@ -8,8 +8,8 @@
 <form method="get" class="mb-4">
     <div class="row g-3">
         <div class="col-md-6">
-            <label for="location" class="form-label">Location:</label>
-            <select class="form-select" id="location" name="location" asp-for="Location">
+            <label for="location" class="form-label">Location</label>
+            <select class="form-select" id="location" name="location" asp-for="Location" required="false">
                 <option value="">Select Region</option>
                 <option value="westeurope">EU West</option>
                 <option value="northeurope">EU North</option>
@@ -17,7 +17,6 @@
                 <option value="germanywestcentral">DE West Central</option>
             </select>
         </div>
-
         <div class="col-md-6">
             <label for="serviceName" class="form-label">Service Name:</label>
             <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
@@ -31,9 +30,17 @@
 
         <div class="col-md-6">
             <label for="serviceFamily" class="form-label">Service Family:</label>
-            <input type="text" class="form-control" id="serviceFamily" name="serviceFamily" 
-                   asp-for="ServiceFamily" placeholder="Enter Service Family" />
+            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily">
+                <option value="">Select Service Family</option>
+                <option value="Compute">Compute</option>
+                <option value="Storage">Storage</option>
+                <option value="Networking">Networking</option>
+                <option value="Databases">Databases</option>
+                <option value="Analytics">Analytics</option>
+                <option value="AI + Machine Learning">AI + Machine Learning</option>
+            </select>
         </div>
+
 
         <div class="col-md-6">
             <label for="currencyCode" class="form-label">Currency:</label>
@@ -46,26 +53,46 @@
 
         <div class="col-md-6">
             <label for="type" class="form-label">Type:</label>
-            <input type="text" class="form-control" id="type" name="type" 
-                   asp-for="Type" placeholder="Enter Type" />
+            <select class="form-select" id="type" name="type" asp-for="Type">
+                <option value="">Select Type</option>
+                <option value="Consumption">Consumption</option>
+                <option value="DevTestConsumption">Dev/Test Consumption</option>
+                <option value="Reserved">Reserved</option>
+                <option value="SoftwareSubscription">Software Subscription</option>
+            </select>
         </div>
 
         <div class="col-md-6">
             <label for="armSkuName" class="form-label">ARM SKU Name:</label>
-            <input type="text" class="form-control" id="armSkuName" name="armSkuName" 
-                   asp-for="ArmSkuName" placeholder="Enter ARM SKU Name" />
+            <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
+                <option value="">Select ARM SKU</option>
+                <option value="Standard_D2s_v3">Standard_D2s_v3</option>
+                <option value="Standard_D4s_v3">Standard_D4s_v3</option>
+                <option value="Standard_D8s_v3">Standard_D8s_v3</option>
+                <option value="Standard_D16s_v3">Standard_D16s_v3</option>
+                <option value="Standard_D32s_v3">Standard_D32s_v3</option>
+            </select>
         </div>
-
         <div class="col-md-6">
             <label for="unitOfMeasure" class="form-label">Unit of Measure:</label>
-            <input type="text" class="form-control" id="unitOfMeasure" name="unitOfMeasure" 
-                   asp-for="UnitOfMeasure" placeholder="Enter Unit of Measure" />
+            <select class="form-select" id="unitOfMeasure" name="unitOfMeasure" asp-for="UnitOfMeasure">
+                <option value="">Select Unit</option>
+                <option value="1 Hour">1 Hour</option>
+                <option value="1 GB/Month">1 GB/Month</option>
+                <option value="1 vCPU/Hour">1 vCPU/Hour</option>
+                <option value="1 GB">1 GB</option>
+                <option value="1 Million Operations">1 Million Operations</option>
+            </select>
         </div>
 
         <div class="col-md-6">
-            <label for="usageHours" class="form-label">Usage Hours:</label>
-            <input type="number" class="form-control" id="usageHours" name="usageHours" 
-                   asp-for="UsageHours" min="1" max="744" placeholder="Hours per month" />
+            <label for="usageHours" class="form-label">Usage Hours</label>
+            <select class="form-select" id="usageHours" name="usageHours" asp-for="UsageHours" required="false">
+                <option value="730">Monthly (730 hours)</option>
+                <option value="168">Weekly (168 hours)</option>
+                <option value="24">Daily (24 hours)</option>
+                <option value="8">Partial Day (8 hours)</option>
+            </select>
         </div>
 
         <div class="col-12">
