@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-6">
             <label for="serviceName" class="form-label">Service Name:</label>
-            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
+            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName"required="false">
                 <option value="">Select Service</option>
                 <option value="Virtual Machines">Virtual Machines</option>
                 <option value="Storage">Storage</option>
@@ -30,7 +30,7 @@
 
         <div class="col-md-6">
             <label for="serviceFamily" class="form-label">Service Family:</label>
-            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily">
+            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily"required="false">
                 <option value="">Select Service Family</option>
                 <option value="Compute">Compute</option>
                 <option value="Storage">Storage</option>
@@ -44,7 +44,7 @@
 
         <div class="col-md-6">
             <label for="currencyCode" class="form-label">Currency:</label>
-            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode">
+            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode" required="false">
                 <option value="EUR">EUR</option>
                 <option value="USD">USD</option>
                 <option value="GBP">GBP</option>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="col-md-6">
-            <label for="type" class="form-label">Type:</label>
+            <label for="type" class="form-label">Nutzungsart:</label>
             <select class="form-select" id="type" name="type" asp-for="Type">
                 <option value="">Select Type</option>
                 <option value="Consumption">Consumption</option>
@@ -63,19 +63,52 @@
         </div>
 
         <div class="col-md-6">
-            <label for="armSkuName" class="form-label">ARM SKU Name:</label>
+            <label for="armSkuName" class="form-label">VM Type:</label>
             <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
                 <option value="">Select ARM SKU</option>
-                <option value="Standard_D2s_v3">Standard_D2s_v3</option>
-                <option value="Standard_D4s_v3">Standard_D4s_v3</option>
-                <option value="Standard_D8s_v3">Standard_D8s_v3</option>
-                <option value="Standard_D16s_v3">Standard_D16s_v3</option>
-                <option value="Standard_D32s_v3">Standard_D32s_v3</option>
+                <!-- General Purpose -->
+                <optgroup label="General Purpose - Dsv3">
+                    <option value="Standard_D2s_v3">D2s v3 (2 vCPU, 8 GB)</option>
+                    <option value="Standard_D4s_v3">D4s v3 (4 vCPU, 16 GB)</option>
+                    <option value="Standard_D8s_v3">D8s v3 (8 vCPU, 32 GB)</option>
+                    <option value="Standard_D16s_v3">D16s v3 (16 vCPU, 64 GB)</option>
+                    <option value="Standard_D32s_v3">D32s v3 (32 vCPU, 128 GB)</option>
+                </optgroup>
+                <!-- Memory Optimized -->
+                <optgroup label="Memory Optimized - Esv3">
+                    <option value="Standard_E2s_v3">E2s v3 (2 vCPU, 16 GB)</option>
+                    <option value="Standard_E4s_v3">E4s v3 (4 vCPU, 32 GB)</option>
+                    <option value="Standard_E8s_v3">E8s v3 (8 vCPU, 64 GB)</option>
+                    <option value="Standard_E16s_v3">E16s v3 (16 vCPU, 128 GB)</option>
+                    <option value="Standard_E32s_v3">E32s v3 (32 vCPU, 256 GB)</option>
+                </optgroup>
+                <!-- Compute Optimized -->
+                <optgroup label="Compute Optimized - Fsv2">
+                    <option value="Standard_F2s_v2">F2s v2 (2 vCPU, 4 GB)</option>
+                    <option value="Standard_F4s_v2">F4s v2 (4 vCPU, 8 GB)</option>
+                    <option value="Standard_F8s_v2">F8s v2 (8 vCPU, 16 GB)</option>
+                    <option value="Standard_F16s_v2">F16s v2 (16 vCPU, 32 GB)</option>
+                    <option value="Standard_F32s_v2">F32s v2 (32 vCPU, 64 GB)</option>
+                </optgroup>
+                <!-- Storage Optimized -->
+                <optgroup label="Storage Optimized - Lsv2">
+                    <option value="Standard_L8s_v2">L8s v2 (8 vCPU, 64 GB, High IOPS)</option>
+                    <option value="Standard_L16s_v2">L16s v2 (16 vCPU, 128 GB, High IOPS)</option>
+                    <option value="Standard_L32s_v2">L32s v2 (32 vCPU, 256 GB, High IOPS)</option>
+                </optgroup>
+                <!-- Basic -->
+                <optgroup label="Basic A-Series">
+                    <option value="Basic_A0">A0 (1 vCPU, 0.75 GB)</option>
+                    <option value="Basic_A1">A1 (1 vCPU, 1.75 GB)</option>
+                    <option value="Basic_A2">A2 (2 vCPU, 3.5 GB)</option>
+                    <option value="Basic_A3">A3 (4 vCPU, 7 GB)</option>
+                    <option value="Basic_A4">A4 (8 vCPU, 14 GB)</option>
+                </optgroup>
             </select>
         </div>
         <div class="col-md-6">
             <label for="unitOfMeasure" class="form-label">Unit of Measure:</label>
-            <select class="form-select" id="unitOfMeasure" name="unitOfMeasure" asp-for="UnitOfMeasure">
+            <select class="form-select" id="unitOfMeasure" name="unitOfMeasure" asp-for="UnitOfMeasure" required="false">
                 <option value="">Select Unit</option>
                 <option value="1 Hour">1 Hour</option>
                 <option value="1 GB/Month">1 GB/Month</option>
