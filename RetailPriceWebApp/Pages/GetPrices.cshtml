@@ -8,8 +8,8 @@
 <form method="get" class="mb-4">
     <div class="row g-3">
         <div class="col-md-6">
-            <label for="region" class="form-label">Region:</label>
-            <select class="form-select" id="region" name="region" asp-for="Region">
+            <label for="location" class="form-label">Location:</label>
+            <select class="form-select" id="location" name="location" asp-for="Location">
                 <option value="">Select Region</option>
                 <option value="westeurope">EU West</option>
                 <option value="northeurope">EU North</option>
@@ -17,6 +17,7 @@
                 <option value="germanywestcentral">DE West Central</option>
             </select>
         </div>
+
         <div class="col-md-6">
             <label for="serviceName" class="form-label">Service Name:</label>
             <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
@@ -27,57 +28,89 @@
                 <option value="Databases">Databases</option>
             </select>
         </div>
-                <div class="col-md-6"></div>
-            <label for="skuName" class="form-label">SKU Name:</label>
-            <input type="text" class="form-control" id="skuName" name="skuName" 
-                   asp-for="SkuName" placeholder="Enter SKU name" />
-        </div>
+
         <div class="col-md-6">
-            <label for="billingCurrency" class="form-label">Currency:</label>
-            <select class="form-select" id="billingCurrency" name="billingCurrency" asp-for="BillingCurrency">
+            <label for="serviceFamily" class="form-label">Service Family:</label>
+            <input type="text" class="form-control" id="serviceFamily" name="serviceFamily" 
+                   asp-for="ServiceFamily" placeholder="Enter Service Family" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="currencyCode" class="form-label">Currency:</label>
+            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode">
                 <option value="EUR">EUR</option>
                 <option value="USD">USD</option>
                 <option value="GBP">GBP</option>
             </select>
         </div>
+
+        <div class="col-md-6">
+            <label for="type" class="form-label">Type:</label>
+            <input type="text" class="form-control" id="type" name="type" 
+                   asp-for="Type" placeholder="Enter Type" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="armSkuName" class="form-label">ARM SKU Name:</label>
+            <input type="text" class="form-control" id="armSkuName" name="armSkuName" 
+                   asp-for="ArmSkuName" placeholder="Enter ARM SKU Name" />
+        </div>
+
+        <div class="col-md-6">
+            <label for="unitOfMeasure" class="form-label">Unit of Measure:</label>
+            <input type="text" class="form-control" id="unitOfMeasure" name="unitOfMeasure" 
+                   asp-for="UnitOfMeasure" placeholder="Enter Unit of Measure" />
+        </div>
+
         <div class="col-md-6">
             <label for="usageHours" class="form-label">Usage Hours:</label>
             <input type="number" class="form-control" id="usageHours" name="usageHours" 
                    asp-for="UsageHours" min="1" max="744" placeholder="Hours per month" />
         </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Get Prices</button>
         </div>
     </div>
 </form>
 
+@if (!ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
 @if (Model.Prices != null && Model.Prices.Any())
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Product Name</th>
-                <th>SKU</th>
-                <th>Region</th>
-                <th>Monthly Cost</th>
+                <th>Service Name</th>
+                <th>Service Family</th>
+                <th>SKU Name</th>
+                <th>Location</th>
                 <th>Unit Price</th>
+                <th>Monthly Cost</th>
+                <th>Unit</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var price in Model.Prices)
             {
                 <tr>
-                    <td>@price.ProductName</td>
+                    <td>@price.ServiceName</td>
+                    <td>@price.ServiceFamily</td>
                     <td>@price.SkuName</td>
                     <td>@price.Location</td>
-                    <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
                     <td>@price.RetailPrice.ToString("C")/hour</td>
+                    <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
+                    <td>@price.UnitOfMeasure</td>
                 </tr>
             }
         </tbody>
     </table>
-}
-else if (!string.IsNullOrEmpty(Model.Region) || !string.IsNullOrEmpty(Model.ServiceName))
-{
-    <p class="alert alert-info">No prices found for the specified filters.</p>
 }
