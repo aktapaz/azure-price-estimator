@@ -18,10 +18,7 @@ namespace RetailPriceWebApp.Pages
         private readonly IConfiguration _config;
         private readonly ILogger<GetPricesModel> _logger;
 
-        public GetPricesModel(
-            IHttpClientFactory clientFactory,
-            IConfiguration config,
-            ILogger<GetPricesModel> logger)
+        public GetPricesModel(IHttpClientFactory clientFactory, IConfiguration config, ILogger<GetPricesModel> logger)
         {
             _clientFactory = clientFactory;
             _config = config;
@@ -29,16 +26,28 @@ namespace RetailPriceWebApp.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public string SkuName { get; set; } = string.Empty;
+        public string CurrencyCode { get; set; } = "EUR";
 
         [BindProperty(SupportsGet = true)]
-        public string Region { get; set; } = string.Empty;
+        public decimal RetailPrice { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Location { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
         public string ServiceName { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string BillingCurrency { get; set; } = "EUR";
+        public string ServiceFamily { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string UnitOfMeasure { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string Type { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string ArmSkuName { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
         public int UsageHours { get; set; } = 730;
@@ -47,23 +56,25 @@ namespace RetailPriceWebApp.Pages
 
         public async Task OnGetAsync()
         {
-            if (!string.IsNullOrWhiteSpace(SkuName) || !string.IsNullOrWhiteSpace(Region) || 
-                !string.IsNullOrWhiteSpace(ServiceName))
+            if (!string.IsNullOrWhiteSpace(Location) || !string.IsNullOrWhiteSpace(ServiceName))
             {
                 try
                 {
                     var client = _clientFactory.CreateClient("AzureRetailPrices");
-                    
                     var filters = new List<string>();
                     
-                    if (!string.IsNullOrWhiteSpace(SkuName))
-                        filters.Add($"startswith(skuName,'{SkuName}')");
-                    if (!string.IsNullOrWhiteSpace(Region))
-                        filters.Add($"location eq '{Region}'");
+                    if (!string.IsNullOrWhiteSpace(Location))
+                        filters.Add($"location eq '{Location}'");
                     if (!string.IsNullOrWhiteSpace(ServiceName))
                         filters.Add($"serviceName eq '{ServiceName}'");
-                    if (!string.IsNullOrWhiteSpace(BillingCurrency))
-                        filters.Add($"currencyCode eq '{BillingCurrency}'");
+                    if (!string.IsNullOrWhiteSpace(ServiceFamily))
+                        filters.Add($"serviceFamily eq '{ServiceFamily}'");
+                    if (!string.IsNullOrWhiteSpace(Type))
+                        filters.Add($"type eq '{Type}'");
+                    if (!string.IsNullOrWhiteSpace(ArmSkuName))
+                        filters.Add($"armSkuName eq '{ArmSkuName}'");
+                    if (!string.IsNullOrWhiteSpace(CurrencyCode))
+                        filters.Add($"currencyCode eq '{CurrencyCode}'");
 
                     var filter = string.Join(" and ", filters);
                     var requestUri = $"https://prices.azure.com/api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
@@ -79,12 +90,10 @@ namespace RetailPriceWebApp.Pages
                         ModelState.AddModelError("", $"Failed to retrieve prices. Status: {response.StatusCode}");
                         return;
                     }
-                    
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    _logger.LogDebug($"Received response: {jsonString}");
 
+                    var jsonString = await response.Content.ReadAsStringAsync();
                     var result = JsonConvert.DeserializeObject<RetailApiResult>(jsonString);
-                    
+
                     if (result?.Items == null || !result.Items.Any())
                     {
                         ModelState.AddModelError("", "No prices found for the specified criteria.");
@@ -94,23 +103,13 @@ namespace RetailPriceWebApp.Pages
                     Prices = result.Items
                         .Where(p => p.RetailPrice > 0)
                         .OrderBy(p => p.ServiceFamily)
-                        .ThenBy(p => p.SkuName)
+                        .ThenBy(p => p.ServiceName)
                         .ToList();
-                }
-                catch (HttpRequestException ex)
-                {
-                    _logger.LogError(ex, "Failed to retrieve prices from Azure Retail Prices API");
-                    ModelState.AddModelError("", $"Failed to retrieve prices: {ex.Message}");
-                }
-                catch (JsonException ex)
-                {
-                    _logger.LogError(ex, "Failed to parse API response");
-                    ModelState.AddModelError("", $"Failed to process the price data: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Unexpected error occurred");
-                    ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
+                    _logger.LogError(ex, "Failed to retrieve prices");
+                    ModelState.AddModelError("", "Failed to retrieve prices. Please try again later.");
                 }
             }
         }
