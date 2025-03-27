@@ -8,68 +8,169 @@
 <form method="get" class="mb-4">
     <div class="row g-3">
         <div class="col-md-6">
-<label for="region" class="form-label">Region:</label>
-            <select class="form-select" id="region" name="region" value="@Model.Region">
+            <label for="location" class="form-label">Location</label>
+            <select class="form-select" id="location" name="location" asp-for="Location" required="false">
                 <option value="">Select Region</option>
-                <option value="westeurope">West Europe</option>
-                <option value="northeurope">North Europe</option>
-                <option value="germanywestcentral">Germany West Central</option>
-                <option value="germanynorth">Germany North</option>
+                <option value="westeurope">EU West</option>
+                <option value="northeurope">EU North</option>
+                <option value="germanynorth">DE North</option>
+                <option value="germanywestcentral">DE West Central</option>
             </select>
         </div>
         <div class="col-md-6">
-            <label for="serviceType" class="form-label">Type:</label>
-            <select class="form-select" id="serviceType" name="serviceType" value="@Model.ServiceType">
-                <option value="">Select Type</option>
-                <option value="Compute">Compute</option>
+            <label for="serviceName" class="form-label">Service Name:</label>
+            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName"required="false">
+                <option value="">Select Service</option>
+                <option value="Virtual Machines">Virtual Machines</option>
                 <option value="Storage">Storage</option>
                 <option value="Networking">Networking</option>
                 <option value="Databases">Databases</option>
             </select>
         </div>
+
         <div class="col-md-6">
-            <label for="skuName" class="form-label">SKU Name:</label>
-            <input type="text" class="form-control" id="skuName" name="skuName" value="@Model.SkuName" />
+            <label for="serviceFamily" class="form-label">Service Family:</label>
+            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily"required="false">
+                <option value="">Select Service Family</option>
+                <option value="Compute">Compute</option>
+                <option value="Storage">Storage</option>
+                <option value="Networking">Networking</option>
+                <option value="Databases">Databases</option>
+                <option value="Analytics">Analytics</option>
+                <option value="AI + Machine Learning">AI + Machine Learning</option>
+            </select>
+        </div>
+
+
+        <div class="col-md-6">
+            <label for="currencyCode" class="form-label">Currency:</label>
+            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode" required="false">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="type" class="form-label">Nutzungsart:</label>
+            <select class="form-select" id="type" name="type" asp-for="Type">
+                <option value="">Select Type</option>
+                <option value="Consumption">Consumption</option>
+                <option value="DevTestConsumption">Dev/Test Consumption</option>
+                <option value="Reserved">Reserved</option>
+                <option value="SoftwareSubscription">Software Subscription</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="armSkuName" class="form-label">VM Type:</label>
+            <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
+                <option value="">Select ARM SKU</option>
+                <!-- General Purpose -->
+                <optgroup label="General Purpose - Dsv3">
+                    <option value="Standard_D2s_v3">D2s v3 (2 vCPU, 8 GB)</option>
+                    <option value="Standard_D4s_v3">D4s v3 (4 vCPU, 16 GB)</option>
+                    <option value="Standard_D8s_v3">D8s v3 (8 vCPU, 32 GB)</option>
+                    <option value="Standard_D16s_v3">D16s v3 (16 vCPU, 64 GB)</option>
+                    <option value="Standard_D32s_v3">D32s v3 (32 vCPU, 128 GB)</option>
+                </optgroup>
+                <!-- Memory Optimized -->
+                <optgroup label="Memory Optimized - Esv3">
+                    <option value="Standard_E2s_v3">E2s v3 (2 vCPU, 16 GB)</option>
+                    <option value="Standard_E4s_v3">E4s v3 (4 vCPU, 32 GB)</option>
+                    <option value="Standard_E8s_v3">E8s v3 (8 vCPU, 64 GB)</option>
+                    <option value="Standard_E16s_v3">E16s v3 (16 vCPU, 128 GB)</option>
+                    <option value="Standard_E32s_v3">E32s v3 (32 vCPU, 256 GB)</option>
+                </optgroup>
+                <!-- Compute Optimized -->
+                <optgroup label="Compute Optimized - Fsv2">
+                    <option value="Standard_F2s_v2">F2s v2 (2 vCPU, 4 GB)</option>
+                    <option value="Standard_F4s_v2">F4s v2 (4 vCPU, 8 GB)</option>
+                    <option value="Standard_F8s_v2">F8s v2 (8 vCPU, 16 GB)</option>
+                    <option value="Standard_F16s_v2">F16s v2 (16 vCPU, 32 GB)</option>
+                    <option value="Standard_F32s_v2">F32s v2 (32 vCPU, 64 GB)</option>
+                </optgroup>
+                <!-- Storage Optimized -->
+                <optgroup label="Storage Optimized - Lsv2">
+                    <option value="Standard_L8s_v2">L8s v2 (8 vCPU, 64 GB, High IOPS)</option>
+                    <option value="Standard_L16s_v2">L16s v2 (16 vCPU, 128 GB, High IOPS)</option>
+                    <option value="Standard_L32s_v2">L32s v2 (32 vCPU, 256 GB, High IOPS)</option>
+                </optgroup>
+                <!-- Basic -->
+                <optgroup label="Basic A-Series">
+                    <option value="Basic_A0">A0 (1 vCPU, 0.75 GB)</option>
+                    <option value="Basic_A1">A1 (1 vCPU, 1.75 GB)</option>
+                    <option value="Basic_A2">A2 (2 vCPU, 3.5 GB)</option>
+                    <option value="Basic_A3">A3 (4 vCPU, 7 GB)</option>
+                    <option value="Basic_A4">A4 (8 vCPU, 14 GB)</option>
+                </optgroup>
+            </select>
         </div>
         <div class="col-md-6">
-            <label for="usageHours" class="form-label">Usage Hours:</label>
-            <input type="number" class="form-control" id="usageHours" name="usageHours" 
-                   value="@Model.UsageHours" min="1" max="744" placeholder="Hours per month" />
+            <label for="unitOfMeasure" class="form-label">Unit of Measure:</label>
+            <select class="form-select" id="unitOfMeasure" name="unitOfMeasure" asp-for="UnitOfMeasure" required="false">
+                <option value="">Select Unit</option>
+                <option value="1 Hour">1 Hour</option>
+                <option value="1 GB/Month">1 GB/Month</option>
+                <option value="1 vCPU/Hour">1 vCPU/Hour</option>
+                <option value="1 GB">1 GB</option>
+                <option value="1 Million Operations">1 Million Operations</option>
+            </select>
         </div>
+
+        <div class="col-md-6">
+            <label for="usageHours" class="form-label">Usage Hours</label>
+            <select class="form-select" id="usageHours" name="usageHours" asp-for="UsageHours" required="false">
+                <option value="730">Monthly (730 hours)</option>
+                <option value="168">Weekly (168 hours)</option>
+                <option value="24">Daily (24 hours)</option>
+                <option value="8">Partial Day (8 hours)</option>
+            </select>
+        </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Get Prices</button>
         </div>
     </div>
 </form>
 
+@if (!ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
 @if (Model.Prices != null && Model.Prices.Any())
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Product Name</th>
-                <th>SKU</th>
-                <th>Region</th>
-                <th>Monthly Cost</th>
+                <th>Service Name</th>
+                <th>Service Family</th>
+                <th>SKU Name</th>
+                <th>Location</th>
                 <th>Unit Price</th>
+                <th>Monthly Cost</th>
+                <th>Unit</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var price in Model.Prices)
             {
                 <tr>
-                    <td>@price.ProductName</td>
+                    <td>@price.ServiceName</td>
+                    <td>@price.ServiceFamily</td>
                     <td>@price.SkuName</td>
                     <td>@price.Location</td>
-                    <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
                     <td>@price.RetailPrice.ToString("C")/hour</td>
+                    <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
+                    <td>@price.UnitOfMeasure</td>
                 </tr>
             }
         </tbody>
     </table>
 }
-else if (!string.IsNullOrEmpty(Model.SkuName) || !string.IsNullOrEmpty(Model.Region))
-{
-    <p class="alert alert-info">No prices found for the specified filters.</p>
-}
-

@@ -1,16 +1,36 @@
-//// filepath: RetailPriceWebApp/Program.cs
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
 builder.Services.AddRazorPages();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("AzureRetailPrices", client =>
+{
+    client.BaseAddress = new Uri("https://prices.azure.com/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AzureRetailPricesPolicy",
+        builder =>
+        {
+            builder.WithOrigins("https://prices.azure.com")
+                   .WithMethods("GET")
+                   .WithHeaders("Accept")
+                   .AllowAnyHeader();
+        });
+});
+
+// Configure logging
+builder.Services.AddLogging(logging =>
+{
+    logging.AddConsole();
+    logging.AddDebug();
+});
 
 var app = builder.Build();
-
+// Enable CORS
+app.UseCors("AzureRetailPricesPolicy");
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
