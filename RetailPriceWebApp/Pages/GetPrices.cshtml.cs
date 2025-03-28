@@ -20,18 +20,6 @@ namespace RetailPriceWebApp.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public string SkuId { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string ProductName { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string ServiceId { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string PriceType { get; set; } = "Consumption";
-
-        [BindProperty(SupportsGet = true)]
         public string CurrencyCode { get; set; } = "EUR";
 
         [BindProperty(SupportsGet = true)]
@@ -45,12 +33,6 @@ namespace RetailPriceWebApp.Pages
 
         [BindProperty(SupportsGet = true)]
         public string ServiceFamily { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string UnitOfMeasure { get; set; } = string.Empty;
-
-        [BindProperty(SupportsGet = true)]
-        public string Type { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
         public string ArmSkuName { get; set; } = string.Empty;
@@ -67,17 +49,21 @@ namespace RetailPriceWebApp.Pages
                 var client = _clientFactory.CreateClient("AzureRetailPrices");
                 var filters = new List<string>();
 
-                if (!string.IsNullOrWhiteSpace(SkuId))
-                    filters.Add($"skuId eq '{SkuId}'");
                 if (!string.IsNullOrWhiteSpace(Location))
                     filters.Add($"armRegionName eq '{Location}'");
                 if (!string.IsNullOrWhiteSpace(ServiceName))
                     filters.Add($"contains(serviceName, '{ServiceName}')");
-                
-                // Build the API request and await the response
-                string filterQuery = string.Join(" and ", filters);
-                string requestUri = $"?$filter={filterQuery}&currencyCode='{CurrencyCode}'";
-                var response = await client.GetAsync(requestUri);
+                if (!string.IsNullOrWhiteSpace(ServiceFamily))
+                    filters.Add($"contains(serviceFamily, '{ServiceFamily}')");
+                if (!string.IsNullOrWhiteSpace(ArmSkuName))
+                    filters.Add($"armSkuName eq '{ArmSkuName}'");
+
+                var filter = string.Join(" and ", filters);
+                var requestUri = $"api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
+
+                _logger.LogInformation($"Requesting prices with URI: {requestUri}");
+
+                using var response = await client.GetAsync(requestUri);
                 
                 if (response.IsSuccessStatusCode)
                 {
@@ -85,7 +71,6 @@ namespace RetailPriceWebApp.Pages
                     var priceData = JsonConvert.DeserializeObject<PriceDataResponse>(content);
                     Prices = priceData?.Items ?? new List<PriceItem>();
                 }
-                // ...rest of the filter conditions...
             }
             catch (Exception ex)
             {
