@@ -52,17 +52,6 @@
         </div>
 
         <div class="col-md-6">
-            <label for="type" class="form-label">Nutzungsart:</label>
-            <select class="form-select" id="type" name="type" asp-for="Type">
-                <option value="">Select Type</option>
-                <option value="Consumption">Consumption</option>
-                <option value="DevTestConsumption">Dev/Test Consumption</option>
-                <option value="Reserved">Reserved</option>
-                <option value="SoftwareSubscription">Software Subscription</option>
-            </select>
-        </div>
-
-        <div class="col-md-6">
             <label for="armSkuName" class="form-label">VM Type:</label>
             <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
                 <option value="">Select ARM SKU</option>
@@ -106,18 +95,6 @@
                 </optgroup>
             </select>
         </div>
-        <div class="col-md-6">
-            <label for="unitOfMeasure" class="form-label">Unit of Measure:</label>
-            <select class="form-select" id="unitOfMeasure" name="unitOfMeasure" asp-for="UnitOfMeasure" required="false">
-                <option value="">Select Unit</option>
-                <option value="1 Hour">1 Hour</option>
-                <option value="1 GB/Month">1 GB/Month</option>
-                <option value="1 vCPU/Hour">1 vCPU/Hour</option>
-                <option value="1 GB">1 GB</option>
-                <option value="1 Million Operations">1 Million Operations</option>
-            </select>
-        </div>
-
         <div class="col-md-6">
             <label for="usageHours" class="form-label">Usage Hours</label>
             <select class="form-select" id="usageHours" name="usageHours" asp-for="UsageHours" required="false">
