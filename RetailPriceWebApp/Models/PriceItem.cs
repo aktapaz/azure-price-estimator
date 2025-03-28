@@ -34,6 +34,9 @@ namespace RetailPriceWebApp.Models
         [JsonProperty("retailPrice")]
         public decimal RetailPrice { get; set; }
 
+        [JsonProperty("unitOfMeasure")]
+        public string UnitOfMeasure { get; set; } = string.Empty;
+
         [JsonProperty("meterId")]
         public string MeterId { get; set; } = string.Empty;
 
