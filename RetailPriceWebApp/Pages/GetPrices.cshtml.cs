@@ -6,12 +6,6 @@ using System.Net.Http;
 
 namespace RetailPriceWebApp.Pages
 {
-    public class RetailApiResult
-    {
-        [JsonProperty("Items")]
-        public List<PriceItem> Items { get; set; } = new();
-    }
-
     public class GetPricesModel : PageModel
     {
         private readonly IHttpClientFactory _clientFactory;
@@ -24,6 +18,18 @@ namespace RetailPriceWebApp.Pages
             _config = config;
             _logger = logger;
         }
+
+        [BindProperty(SupportsGet = true)]
+        public string SkuId { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string ProductName { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string ServiceId { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string PriceType { get; set; } = "Consumption";
 
         [BindProperty(SupportsGet = true)]
         public string CurrencyCode { get; set; } = "EUR";
@@ -54,70 +60,37 @@ namespace RetailPriceWebApp.Pages
 
         public List<PriceItem> Prices { get; set; } = new();
 
- public async Task OnGetAsync()
+        public async Task OnGetAsync()
         {
-            if (!string.IsNullOrWhiteSpace(Location) || !string.IsNullOrWhiteSpace(ServiceName))
+            try
             {
-                try
+                var client = _clientFactory.CreateClient("AzureRetailPrices");
+                var filters = new List<string>();
+
+                if (!string.IsNullOrWhiteSpace(SkuId))
+                    filters.Add($"skuId eq '{SkuId}'");
+                if (!string.IsNullOrWhiteSpace(Location))
+                    filters.Add($"armRegionName eq '{Location}'");
+                if (!string.IsNullOrWhiteSpace(ServiceName))
+                    filters.Add($"contains(serviceName, '{ServiceName}')");
+                
+                // Build the API request and await the response
+                string filterQuery = string.Join(" and ", filters);
+                string requestUri = $"?$filter={filterQuery}&currencyCode='{CurrencyCode}'";
+                var response = await client.GetAsync(requestUri);
+                
+                if (response.IsSuccessStatusCode)
                 {
-                    var client = _clientFactory.CreateClient("AzureRetailPrices");
-                    var filters = new List<string>();
-                    
-                    if (!string.IsNullOrWhiteSpace(SkuId))
-                        filters.Add($"skuId eq '{SkuId}'");
-                    if (!string.IsNullOrWhiteSpace(ProductName))
-                        filters.Add($"contains(productName, '{ProductName}')");
-                    if (!string.IsNullOrWhiteSpace(ServiceId))
-                        filters.Add($"serviceId eq '{ServiceId}'");
-                    if (!string.IsNullOrWhiteSpace(PriceType))
-                        filters.Add($"priceType eq '{PriceType}'");
-                    if (!string.IsNullOrWhiteSpace(Location))
-                        filters.Add($"location eq '{Location}'");
-                    if (!string.IsNullOrWhiteSpace(ServiceName))
-                        filters.Add($"serviceName eq '{ServiceName}'");
-                    if (!string.IsNullOrWhiteSpace(ServiceFamily))
-                        filters.Add($"serviceFamily eq '{ServiceFamily}'");
-                    if (!string.IsNullOrWhiteSpace(Type))
-                        filters.Add($"type eq '{Type}'");
-                    if (!string.IsNullOrWhiteSpace(ArmSkuName))
-                        filters.Add($"armSkuName eq '{ArmSkuName}'");
-                    if (!string.IsNullOrWhiteSpace(CurrencyCode))
-                        filters.Add($"currencyCode eq '{CurrencyCode}'");
-
-                    var filter = string.Join(" and ", filters);
-                    var requestUri = $"api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
-                    _logger.LogInformation($"Requesting prices with URI: {requestUri}");
-
-                    using var response = await client.GetAsync(requestUri);
-                    
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        var errorContent = await response.Content.ReadAsStringAsync();
-                        _logger.LogError($"API request failed with status {response.StatusCode}: {errorContent}");
-                        ModelState.AddModelError("", $"Failed to retrieve prices. Status: {response.StatusCode}");
-                        return;
-                    }
-
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<RetailApiResult>(jsonString);
-
-                    if (result?.Items == null || !result.Items.Any())
-                    {
-                        ModelState.AddModelError("", "No prices found for the specified criteria.");
-                        return;
-                    }
-
-                    Prices = result.Items
-                        .Where(p => p.RetailPrice > 0)
-                        .OrderBy(p => p.ServiceFamily)
-                        .ThenBy(p => p.ServiceName)
-                        .ToList();
+                    var content = await response.Content.ReadAsStringAsync();
+                    var priceData = JsonConvert.DeserializeObject<PriceDataResponse>(content);
+                    Prices = priceData?.Items ?? new List<PriceItem>();
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to retrieve prices");
-                    ModelState.AddModelError("", "Failed to retrieve prices. Please try again later.");
-                }
+                // ...rest of the filter conditions...
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to retrieve prices");
+                ModelState.AddModelError("", "Failed to retrieve prices. Please try again later.");
             }
         }
     }
