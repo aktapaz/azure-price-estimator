@@ -54,7 +54,7 @@ namespace RetailPriceWebApp.Pages
 
         public List<PriceItem> Prices { get; set; } = new();
 
-        public async Task OnGetAsync()
+ public async Task OnGetAsync()
         {
             if (!string.IsNullOrWhiteSpace(Location) || !string.IsNullOrWhiteSpace(ServiceName))
             {
@@ -63,6 +63,14 @@ namespace RetailPriceWebApp.Pages
                     var client = _clientFactory.CreateClient("AzureRetailPrices");
                     var filters = new List<string>();
                     
+                    if (!string.IsNullOrWhiteSpace(SkuId))
+                        filters.Add($"skuId eq '{SkuId}'");
+                    if (!string.IsNullOrWhiteSpace(ProductName))
+                        filters.Add($"contains(productName, '{ProductName}')");
+                    if (!string.IsNullOrWhiteSpace(ServiceId))
+                        filters.Add($"serviceId eq '{ServiceId}'");
+                    if (!string.IsNullOrWhiteSpace(PriceType))
+                        filters.Add($"priceType eq '{PriceType}'");
                     if (!string.IsNullOrWhiteSpace(Location))
                         filters.Add($"location eq '{Location}'");
                     if (!string.IsNullOrWhiteSpace(ServiceName))
@@ -77,8 +85,7 @@ namespace RetailPriceWebApp.Pages
                         filters.Add($"currencyCode eq '{CurrencyCode}'");
 
                     var filter = string.Join(" and ", filters);
-                    var requestUri = $"https://prices.azure.com/api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
-
+                    var requestUri = $"api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
                     _logger.LogInformation($"Requesting prices with URI: {requestUri}");
 
                     using var response = await client.GetAsync(requestUri);
