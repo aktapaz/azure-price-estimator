@@ -1,15 +1,16 @@
 @page
 @model GetPricesModel
 @{
-    ViewData["Title"] = "Get Azure Retail Prices";
+    ViewData["Title"] = "Azure Price Estimator";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
 <form method="get" class="mb-4">
     <div class="row g-3">
         <div class="col-md-6">
-            <label for="location" class="form-label">Location</label>
-            <select class="form-select" id="location" name="location" asp-for="Location" required="false">
+            <label for="location" class="form-label">Region</label>
+            <select class="form-select" id="location" name="location" asp-for="Location">
                 <option value="">Select Region</option>
                 <option value="westeurope">EU West</option>
                 <option value="northeurope">EU North</option>
@@ -17,20 +18,10 @@
                 <option value="germanywestcentral">DE West Central</option>
             </select>
         </div>
-        <div class="col-md-6">
-            <label for="serviceName" class="form-label">Service Name:</label>
-            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName"required="false">
-                <option value="">Select Service</option>
-                <option value="Virtual Machines">Virtual Machines</option>
-                <option value="Storage">Storage</option>
-                <option value="Networking">Networking</option>
-                <option value="Databases">Databases</option>
-            </select>
-        </div>
 
         <div class="col-md-6">
-            <label for="serviceFamily" class="form-label">Service Family:</label>
-            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily"required="false">
+            <label for="serviceFamily" class="form-label">Service Family</label>
+            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily">
                 <option value="">Select Service Family</option>
                 <option value="Compute">Compute</option>
                 <option value="Storage">Storage</option>
@@ -41,21 +32,21 @@
             </select>
         </div>
 
-
         <div class="col-md-6">
-            <label for="currencyCode" class="form-label">Currency:</label>
-            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode" required="false">
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
-                <option value="GBP">GBP</option>
+            <label for="serviceName" class="form-label">Service Name</label>
+            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
+                <option value="">Select Service</option>
+                <option value="Virtual Machines">Virtual Machines</option>
+                <option value="Storage">Storage</option>
+                <option value="Networking">Networking</option>
+                <option value="Databases">Databases</option>
             </select>
         </div>
 
         <div class="col-md-6">
-            <label for="armSkuName" class="form-label">VM Type:</label>
+            <label for="armSkuName" class="form-label">VM Size</label>
             <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
-                <option value="">Select ARM SKU</option>
-                <!-- General Purpose -->
+                <option value="">Select Size</option>
                 <optgroup label="General Purpose - Dsv3">
                     <option value="Standard_D2s_v3">D2s v3 (2 vCPU, 8 GB)</option>
                     <option value="Standard_D4s_v3">D4s v3 (4 vCPU, 16 GB)</option>
@@ -63,7 +54,6 @@
                     <option value="Standard_D16s_v3">D16s v3 (16 vCPU, 64 GB)</option>
                     <option value="Standard_D32s_v3">D32s v3 (32 vCPU, 128 GB)</option>
                 </optgroup>
-                <!-- Memory Optimized -->
                 <optgroup label="Memory Optimized - Esv3">
                     <option value="Standard_E2s_v3">E2s v3 (2 vCPU, 16 GB)</option>
                     <option value="Standard_E4s_v3">E4s v3 (4 vCPU, 32 GB)</option>
@@ -71,7 +61,6 @@
                     <option value="Standard_E16s_v3">E16s v3 (16 vCPU, 128 GB)</option>
                     <option value="Standard_E32s_v3">E32s v3 (32 vCPU, 256 GB)</option>
                 </optgroup>
-                <!-- Compute Optimized -->
                 <optgroup label="Compute Optimized - Fsv2">
                     <option value="Standard_F2s_v2">F2s v2 (2 vCPU, 4 GB)</option>
                     <option value="Standard_F4s_v2">F4s v2 (4 vCPU, 8 GB)</option>
@@ -79,25 +68,21 @@
                     <option value="Standard_F16s_v2">F16s v2 (16 vCPU, 32 GB)</option>
                     <option value="Standard_F32s_v2">F32s v2 (32 vCPU, 64 GB)</option>
                 </optgroup>
-                <!-- Storage Optimized -->
-                <optgroup label="Storage Optimized - Lsv2">
-                    <option value="Standard_L8s_v2">L8s v2 (8 vCPU, 64 GB, High IOPS)</option>
-                    <option value="Standard_L16s_v2">L16s v2 (16 vCPU, 128 GB, High IOPS)</option>
-                    <option value="Standard_L32s_v2">L32s v2 (32 vCPU, 256 GB, High IOPS)</option>
-                </optgroup>
-                <!-- Basic -->
-                <optgroup label="Basic A-Series">
-                    <option value="Basic_A0">A0 (1 vCPU, 0.75 GB)</option>
-                    <option value="Basic_A1">A1 (1 vCPU, 1.75 GB)</option>
-                    <option value="Basic_A2">A2 (2 vCPU, 3.5 GB)</option>
-                    <option value="Basic_A3">A3 (4 vCPU, 7 GB)</option>
-                    <option value="Basic_A4">A4 (8 vCPU, 14 GB)</option>
-                </optgroup>
             </select>
         </div>
+
         <div class="col-md-6">
-            <label for="usageHours" class="form-label">Usage Hours</label>
-            <select class="form-select" id="usageHours" name="usageHours" asp-for="UsageHours" required="false">
+            <label for="currencyCode" class="form-label">Currency</label>
+            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="usageHours" class="form-label">Usage Period</label>
+            <select class="form-select" id="usageHours" name="usageHours" asp-for="UsageHours">
                 <option value="730">Monthly (730 hours)</option>
                 <option value="168">Weekly (168 hours)</option>
                 <option value="24">Daily (24 hours)</option>
@@ -105,8 +90,8 @@
             </select>
         </div>
 
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Get Prices</button>
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary">Calculate Prices</button>
         </div>
     </div>
 </form>
@@ -116,38 +101,40 @@
     <div class="alert alert-danger">
         @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
         {
-            <p>@error.ErrorMessage</p>
+            <p class="mb-0">@error.ErrorMessage</p>
         }
     </div>
 }
 
 @if (Model.Prices != null && Model.Prices.Any())
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Service Name</th>
-                <th>Service Family</th>
-                <th>SKU Name</th>
-                <th>Location</th>
-                <th>Unit Price</th>
-                <th>Monthly Cost</th>
-                <th>Unit</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var price in Model.Prices)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-light">
                 <tr>
-                    <td>@price.ServiceName</td>
-                    <td>@price.ServiceFamily</td>
-                    <td>@price.SkuName</td>
-                    <td>@price.Location</td>
-                    <td>@price.RetailPrice.ToString("C")/hour</td>
-                    <td>@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
-                    <td>@price.UnitOfMeasure</td>
+                    <th>Service</th>
+                    <th>Family</th>
+                    <th>SKU</th>
+                    <th>Region</th>
+                    <th class="text-end">Price/Hour</th>
+                    <th class="text-end">Total Cost</th>
+                    <th>Unit</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var price in Model.Prices)
+                {
+                    <tr>
+                        <td>@price.ServiceName</td>
+                        <td>@price.ServiceFamily</td>
+                        <td>@price.SkuName</td>
+                        <td>@price.Location</td>
+                        <td class="text-end">@price.RetailPrice.ToString("C")</td>
+                        <td class="text-end">@((price.RetailPrice * Model.UsageHours).ToString("C"))</td>
+                        <td>@price.UnitOfMeasure</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
