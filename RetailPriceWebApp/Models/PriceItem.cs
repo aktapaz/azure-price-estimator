@@ -19,6 +19,9 @@ namespace RetailPriceWebApp.Models
         [JsonProperty("skuName")]
         public string SkuName { get; set; } = string.Empty;
 
+        [JsonProperty("serviceFamily")]
+        public string ServiceFamily { get; set; } = string.Empty;
+
         [JsonProperty("priceType")]
         public string PriceType { get; set; } = string.Empty;
 
@@ -30,6 +33,7 @@ namespace RetailPriceWebApp.Models
 
         [JsonProperty("retailPrice")]
         public decimal RetailPrice { get; set; }
+
         [JsonProperty("meterId")]
         public string MeterId { get; set; } = string.Empty;
 
