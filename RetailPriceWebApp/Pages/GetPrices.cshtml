@@ -6,11 +6,11 @@
 
 <h1 class="mb-4">@ViewData["Title"]</h1>
 
-<form method="get" class="mb-4">
+<form method="get" class="mb-4" novalidate>
     <div class="row g-3">
         <div class="col-md-6">
             <label for="location" class="form-label">Region</label>
-            <select class="form-select" id="location" name="location" asp-for="Location">
+            <select class="form-select" id="location" name="location" asp-for="Location" required="false">
                 <option value="">Select Region</option>
                 <option value="westeurope">EU West</option>
                 <option value="northeurope">EU North</option>
@@ -21,7 +21,7 @@
 
         <div class="col-md-6">
             <label for="serviceFamily" class="form-label">Service Family</label>
-            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily">
+            <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily" required="false">
                 <option value="">Select Service Family</option>
                 <option value="Compute">Compute</option>
                 <option value="Storage">Storage</option>
@@ -34,7 +34,7 @@
 
         <div class="col-md-6">
             <label for="serviceName" class="form-label">Service Name</label>
-            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
+            <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName" required="false">
                 <option value="">Select Service</option>
                 <option value="Virtual Machines">Virtual Machines</option>
                 <option value="Storage">Storage</option>
@@ -45,7 +45,7 @@
 
         <div class="col-md-6">
             <label for="armSkuName" class="form-label">VM Size</label>
-            <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
+            <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName" required="false">
                 <option value="">Select Size</option>
                 <optgroup label="General Purpose - Dsv3">
                     <option value="Standard_D2s_v3">D2s v3 (2 vCPU, 8 GB)</option>
@@ -73,7 +73,7 @@
 
         <div class="col-md-6">
             <label for="currencyCode" class="form-label">Currency</label>
-            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode">
+            <select class="form-select" id="currencyCode" name="currencyCode" asp-for="CurrencyCode" required="false">
                 <option value="EUR">EUR</option>
                 <option value="USD">USD</option>
                 <option value="GBP">GBP</option>
@@ -95,16 +95,6 @@
         </div>
     </div>
 </form>
-
-@if (!ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p class="mb-0">@error.ErrorMessage</p>
-        }
-    </div>
-}
 
 @if (Model.Prices != null && Model.Prices.Any())
 {
