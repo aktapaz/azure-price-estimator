@@ -101,7 +101,7 @@
         _ => "fr-FR"
     });
 
-    var filteredPrices = Model.Prices
+       var filteredPrices = Model.Prices
         .Where(p => !string.IsNullOrEmpty(p.SkuName))
         .Where(p => 
             // Handle Storage prices
