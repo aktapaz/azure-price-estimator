@@ -1,40 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "mKXQsCZl8Ok=",
-  "success": true,
-  "projectFilePath": "C:\\Users\\username\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.aspnetcore.http.extensions\\2.2.0\\microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.configuration.binder\\8.0.0\\microsoft.extensions.configuration.binder.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.diagnostics\\8.0.0\\microsoft.extensions.diagnostics.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\8.0.0\\microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\2.2.0\\microsoft.extensions.fileproviders.abstractions.2.2.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.http\\8.0.0\\microsoft.extensions.http.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.logging\\8.0.0\\microsoft.extensions.logging.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.logging.configuration\\8.0.0\\microsoft.extensions.logging.configuration.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.logging.console\\8.0.0\\microsoft.extensions.logging.console.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.logging.debug\\8.0.0\\microsoft.extensions.logging.debug.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\8.0.0\\microsoft.extensions.options.configurationextensions.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\system.diagnostics.diagnosticsource\\8.0.0\\system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.14\\microsoft.netcore.app.ref.8.0.14.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.14\\microsoft.windowsdesktop.app.ref.8.0.14.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.14\\microsoft.aspnetcore.app.ref.8.0.14.nupkg.sha512",
-    "C:\\Users\\username\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.14\\microsoft.netcore.app.host.win-x64.8.0.14.nupkg.sha512"
-  ],
-  "logs": []
+  "dgSpecHash": "vkmwYsBHZeo=",
+  "success": false,
+  "projectFilePath": "C:\\Users\\dezapc00\\Repositories\\azure-price-estimator\\RetailPriceWebApp\\RetailPriceWebApp.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.AspNetCore.Cors' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.AspNetCore.Cors'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.AspNetCore.Cors"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Extensions.Logging.Console' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.Extensions.Logging.Console'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.Extensions.Logging.Console"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Extensions.Http' from remote source 'https://www.nuget.org/FindPackagesById()?id='Microsoft.Extensions.Http'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.Extensions.Http"
+    }
+  ]
 }
