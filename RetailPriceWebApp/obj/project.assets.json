@@ -1,6 +1,9 @@
 {
   "version": 3,
   "targets": {
+    "net8.0": {}
+  },
+  "libraries": {},
     "net8.0": {
       "Microsoft.AspNetCore.Cors/2.2.0": {
         "type": "package",
