@@ -23,6 +23,12 @@ namespace RetailPriceWebApp.Pages
         public string CurrencyCode { get; set; } = "EUR";
 
         [BindProperty(SupportsGet = true)]
+        public int? StorageSize { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string StorageRedundancy { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
         public decimal RetailPrice { get; set; }
 
         [BindProperty(SupportsGet = true)]
