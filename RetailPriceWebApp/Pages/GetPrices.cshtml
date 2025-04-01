@@ -45,7 +45,7 @@
         </div>
 
         <div class="col-md-6">
-            <label for="armSkuName" class="form-label">VM Size</label>
+            <label for="armSkuName" class="form-label">Size Options</label>
             <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
                 <option value="">Select Size</option>
                 <optgroup label="General Purpose - Dsv3">
@@ -54,6 +54,21 @@
                     <option value="Standard_D8s_v3">D8s v3 (8 vCPU, 32 GB)</option>
                     <option value="Standard_D16s_v3">D16s v3 (16 vCPU, 64 GB)</option>
                     <option value="Standard_D32s_v3">D32s v3 (32 vCPU, 128 GB)</option>
+                </optgroup>
+                <optgroup label="Storage Accounts">
+                    <option value="Standard_LRS">Locally Redundant Storage (LRS)</option>
+                    <option value="Standard_GRS">Geo-Redundant Storage (GRS)</option>
+                    <option value="Standard_RAGRS">Read-Access Geo-Redundant Storage (RA-GRS)</option>
+                    <option value="Premium_LRS">Premium Locally Redundant Storage (P-LRS)</option>
+                    <option value="Premium_ZRS">Premium Zone-Redundant Storage (P-ZRS)</option>
+                </optgroup>
+                <optgroup label="Managed Disks">
+                    <option value="Standard_S4">Standard SSD S4 (32 GB)</option>
+                    <option value="Standard_S6">Standard SSD S6 (64 GB)</option>
+                    <option value="Standard_S10">Standard SSD S10 (128 GB)</option>
+                    <option value="Premium_P4">Premium SSD P4 (32 GB)</option>
+                    <option value="Premium_P6">Premium SSD P6 (64 GB)</option>
+                    <option value="Premium_P10">Premium SSD P10 (128 GB)</option>
                 </optgroup>
                 <optgroup label="Memory Optimized - Esv3">
                     <option value="Standard_E2s_v3">E2s v3 (2 vCPU, 16 GB)</option>
@@ -107,6 +122,12 @@
         _ => new CultureInfo("fr-FR")
     };
 
+    var filteredPrices = Model.Prices.Where(p => 
+        !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
+        !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
+        !p.ProductName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) &&
+        !p.ProductName.Contains("Spot", StringComparison.OrdinalIgnoreCase));
+
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="table-light">
@@ -121,7 +142,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var price in Model.Prices)
+                @foreach (var price in filteredPrices)
                 {
                     <tr>
                         <td>@price.ServiceName</td>
