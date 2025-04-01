@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-6" id="vmSizeContainer">
-            <label for="armSkuName" class="form-label">VM Size</label>
+            <label for="armSkuName" class="form-label">Size Options</label>
             <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
                 <option value="">Select Size</option>
                 <optgroup label="General Purpose - Dsv3">
@@ -101,15 +101,41 @@
         _ => "fr-FR"
     });
 
-    var filteredPrices = Model.Prices.Where(p => 
-        !string.IsNullOrEmpty(p.SkuName) &&
-        !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
-        !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
-        !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
-        !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase) &&
-        (string.IsNullOrEmpty(Model.StorageRedundancy) || 
-         p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase))
-    ).OrderBy(p => p.RetailPrice);
+    var filteredPrices = Model.Prices
+        .Where(p => !string.IsNullOrEmpty(p.SkuName))
+        .Where(p => 
+            // Handle Storage prices
+            (p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
+             (string.IsNullOrEmpty(Model.StorageRedundancy) || 
+              p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase)))
+            ||
+            // Handle VM prices - show only PAYG and specific Reserved options
+            (!p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
+             !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
+             !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
+             !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
+             !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase))
+        )
+        .GroupBy(p => new { p.ServiceName, BaseSku = p.SkuName.Split('_')[0] })
+        .SelectMany(g => g.OrderBy(p => 
+            p.SkuName.Contains("Reserved", StringComparison.OrdinalIgnoreCase) ? 
+                (p.SkuName.Contains("1 Year", StringComparison.OrdinalIgnoreCase) ? 1 : 2) : 
+                0
+        ).Take(3))
+        .OrderBy(p => p.SkuName)
+        .ThenBy(p => p.RetailPrice);
+
+    <div class="d-flex justify-content-end mb-3">
+        <form method="post" asp-page-handler="Export">
+            @foreach (var price in filteredPrices)
+            {
+                <input type="hidden" name="prices" value="@System.Text.Json.JsonSerializer.Serialize(price)" />
+            }
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-file-earmark-excel"></i> Export to Excel
+            </button>
+        </form>
+    </div>
 
     <div class="table-responsive mt-4">
         <table class="table table-striped table-hover">
