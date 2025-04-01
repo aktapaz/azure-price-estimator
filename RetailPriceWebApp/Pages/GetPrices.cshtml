@@ -24,66 +24,45 @@
             <label for="serviceFamily" class="form-label">Service Family</label>
             <select class="form-select" id="serviceFamily" name="serviceFamily" asp-for="ServiceFamily">
                 <option value="">Select Service Family</option>
-                <option value="Compute">Compute</option>
+                <option value="Compute">Virtual Machines</option>
                 <option value="Storage">Storage</option>
-                <option value="Networking">Networking</option>
-                <option value="Databases">Databases</option>
-                <option value="Analytics">Analytics</option>
-                <option value="AI + Machine Learning">AI + Machine Learning</option>
             </select>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6" id="serviceNameContainer">
             <label for="serviceName" class="form-label">Service Name</label>
             <select class="form-select" id="serviceName" name="serviceName" asp-for="ServiceName">
                 <option value="">Select Service</option>
                 <option value="Virtual Machines">Virtual Machines</option>
                 <option value="Storage">Storage</option>
-                <option value="Networking">Networking</option>
-                <option value="Databases">Databases</option>
             </select>
         </div>
 
-        <div class="col-md-6">
-            <label for="armSkuName" class="form-label">Size Options</label>
+        <div class="col-md-6" id="vmSizeContainer">
+            <label for="armSkuName" class="form-label">VM Size</label>
             <select class="form-select" id="armSkuName" name="armSkuName" asp-for="ArmSkuName">
                 <option value="">Select Size</option>
                 <optgroup label="General Purpose - Dsv3">
                     <option value="Standard_D2s_v3">D2s v3 (2 vCPU, 8 GB)</option>
                     <option value="Standard_D4s_v3">D4s v3 (4 vCPU, 16 GB)</option>
                     <option value="Standard_D8s_v3">D8s v3 (8 vCPU, 32 GB)</option>
-                    <option value="Standard_D16s_v3">D16s v3 (16 vCPU, 64 GB)</option>
-                    <option value="Standard_D32s_v3">D32s v3 (32 vCPU, 128 GB)</option>
                 </optgroup>
-                <optgroup label="Storage Accounts">
-                    <option value="Standard_LRS">Locally Redundant Storage (LRS)</option>
-                    <option value="Standard_GRS">Geo-Redundant Storage (GRS)</option>
-                    <option value="Standard_RAGRS">Read-Access Geo-Redundant Storage (RA-GRS)</option>
-                    <option value="Premium_LRS">Premium Locally Redundant Storage (P-LRS)</option>
-                    <option value="Premium_ZRS">Premium Zone-Redundant Storage (P-ZRS)</option>
-                </optgroup>
-                <optgroup label="Managed Disks">
-                    <option value="Standard_S4">Standard SSD S4 (32 GB)</option>
-                    <option value="Standard_S6">Standard SSD S6 (64 GB)</option>
-                    <option value="Standard_S10">Standard SSD S10 (128 GB)</option>
-                    <option value="Premium_P4">Premium SSD P4 (32 GB)</option>
-                    <option value="Premium_P6">Premium SSD P6 (64 GB)</option>
-                    <option value="Premium_P10">Premium SSD P10 (128 GB)</option>
-                </optgroup>
-                <optgroup label="Memory Optimized - Esv3">
-                    <option value="Standard_E2s_v3">E2s v3 (2 vCPU, 16 GB)</option>
-                    <option value="Standard_E4s_v3">E4s v3 (4 vCPU, 32 GB)</option>
-                    <option value="Standard_E8s_v3">E8s v3 (8 vCPU, 64 GB)</option>
-                    <option value="Standard_E16s_v3">E16s v3 (16 vCPU, 128 GB)</option>
-                    <option value="Standard_E32s_v3">E32s v3 (32 vCPU, 256 GB)</option>
-                </optgroup>
-                <optgroup label="Compute Optimized - Fsv2">
-                    <option value="Standard_F2s_v2">F2s v2 (2 vCPU, 4 GB)</option>
-                    <option value="Standard_F4s_v2">F4s v2 (4 vCPU, 8 GB)</option>
-                    <option value="Standard_F8s_v2">F8s v2 (8 vCPU, 16 GB)</option>
-                    <option value="Standard_F16s_v2">F16s v2 (16 vCPU, 32 GB)</option>
-                    <option value="Standard_F32s_v2">F32s v2 (32 vCPU, 64 GB)</option>
-                </optgroup>
+            </select>
+        </div>
+
+        <div class="col-md-6" id="storageSizeContainer">
+            <label for="storageSize" class="form-label">Storage Size (GB)</label>
+            <input type="number" class="form-control" id="storageSize" name="storageSize" asp-for="StorageSize" 
+                   min="1" max="65536" step="1" placeholder="Enter size (1-65536 GB)">
+        </div>
+
+        <div class="col-md-6" id="storageRedundancyContainer">
+            <label for="storageRedundancy" class="form-label">Storage Redundancy</label>
+            <select class="form-select" id="storageRedundancy" name="storageRedundancy" asp-for="StorageRedundancy">
+                <option value="">Select Redundancy</option>
+                <option value="Standard_LRS">LRS - Locally Redundant</option>
+                <option value="Standard_ZRS">ZRS - Zone Redundant</option>
+                <option value="Standard_GRS">GRS - Geo Redundant</option>
             </select>
         </div>
 
@@ -99,10 +78,10 @@
         <div class="col-md-6">
             <label for="usageHours" class="form-label">Usage Period</label>
             <select class="form-select" id="usageHours" name="usageHours" asp-for="UsageHours">
-                <option value="730">Monthly (730 hours)</option>
-                <option value="168">Weekly (168 hours)</option>
-                <option value="24">Daily (24 hours)</option>
-                <option value="8">Partial Day (8 hours)</option>
+                <option value="730">Monthly (730h)</option>
+                <option value="168">Weekly (168h)</option>
+                <option value="24">Daily (24h)</option>
+                <option value="8">Partial Day (8h)</option>
             </select>
         </div>
 
@@ -112,28 +91,26 @@
     </div>
 </form>
 
-@if (Model.Prices != null && Model.Prices.Any())
+@if (Model.Prices?.Any() == true)
 {
-    var culture = Model.CurrencyCode switch
+    var culture = new CultureInfo(Model.CurrencyCode switch
     {
-        "EUR" => new CultureInfo("fr-FR"),
-        "GBP" => new CultureInfo("en-GB"),
-        "USD" => new CultureInfo("en-US"),
-        _ => new CultureInfo("fr-FR")
-    };
+        "EUR" => "fr-FR",
+        "GBP" => "en-GB",
+        "USD" => "en-US",
+        _ => "fr-FR"
+    });
 
     var filteredPrices = Model.Prices.Where(p => 
+        !string.IsNullOrEmpty(p.SkuName) &&
         !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
-        !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
-        !p.ProductName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) &&
-        !p.ProductName.Contains("Spot", StringComparison.OrdinalIgnoreCase));
+        !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase));
 
-    <div class="table-responsive">
+    <div class="table-responsive mt-4">
         <table class="table table-striped table-hover">
             <thead class="table-light">
                 <tr>
                     <th>Service</th>
-                    <th>Family</th>
                     <th>SKU</th>
                     <th>Region</th>
                     <th class="text-end">Price/Hour</th>
@@ -146,7 +123,6 @@
                 {
                     <tr>
                         <td>@price.ServiceName</td>
-                        <td>@price.ServiceFamily</td>
                         <td>@price.SkuName</td>
                         <td>@price.Location</td>
                         <td class="text-end">@price.RetailPrice.ToString("C", culture)</td>
