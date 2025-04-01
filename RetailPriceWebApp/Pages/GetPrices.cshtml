@@ -109,20 +109,28 @@
              (string.IsNullOrEmpty(Model.StorageRedundancy) || 
               p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase)))
             ||
-            // Handle VM prices - show only PAYG and specific Reserved options
+            // Handle VM prices - show PAYG and Reserved Instances
             (!p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
              !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
              !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
              !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
-             !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase))
+             !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase) &&
+             (
+                 // Include PAYG prices
+                 (!p.SkuName.Contains("Reserved", StringComparison.OrdinalIgnoreCase) && 
+                  !p.SkuName.Contains("RI", StringComparison.OrdinalIgnoreCase)) ||
+                 // Include 1-year and 3-year Reserved Instances
+                 p.SkuName.Contains("1 Year Reserved", StringComparison.OrdinalIgnoreCase) ||
+                 p.SkuName.Contains("3 Year Reserved", StringComparison.OrdinalIgnoreCase)
+             ))
         )
-        .GroupBy(p => new { p.ServiceName, BaseSku = p.SkuName.Split('_')[0] })
-        .SelectMany(g => g.OrderBy(p => 
-            p.SkuName.Contains("Reserved", StringComparison.OrdinalIgnoreCase) ? 
-                (p.SkuName.Contains("1 Year", StringComparison.OrdinalIgnoreCase) ? 1 : 2) : 
-                0
-        ).Take(3))
         .OrderBy(p => p.SkuName)
+        .ThenBy(p => 
+            // Order by commitment type: PAYG first, then 1yr, then 3yr
+            p.SkuName.Contains("3 Year") ? 2 :
+            p.SkuName.Contains("1 Year") ? 1 : 
+            0
+        )
         .ThenBy(p => p.RetailPrice);
 
     <div class="d-flex justify-content-end mb-3">
