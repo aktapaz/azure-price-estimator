@@ -7,6 +7,7 @@ builder.Services.AddHttpClient("AzureRetailPrices", client =>
     client.BaseAddress = new Uri("https://prices.azure.com/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
+
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
@@ -28,8 +29,10 @@ builder.Services.AddLogging(logging =>
 });
 
 var app = builder.Build();
+
 // Enable CORS
 app.UseCors("AzureRetailPricesPolicy");
+
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
