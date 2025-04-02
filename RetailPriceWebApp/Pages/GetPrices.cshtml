@@ -109,26 +109,27 @@ var filteredPrices = Model.Prices
          (string.IsNullOrEmpty(Model.StorageRedundancy) || 
           p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase)))
         ||
-        // Handle VM prices
+        // Handle VM prices - simplified conditions
         (!p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
          p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase) &&
          !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
-         !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
-         !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
-         !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase))
+         !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase))
     )
+    // Group by the base SKU to get unique combinations
     .GroupBy(p => new { 
         p.ServiceName, 
+        p.Location,
         BaseSku = p.SkuName.Split('_')[0],
-        PriceType = p.SkuName.Contains("3 Year") ? "3Year" :
-                   p.SkuName.Contains("1 Year") ? "1Year" :
+        // Identify price type with more specific conditions
+        PriceType = p.SkuName.Contains("Reserved Instance 3 Year") ? "3Year" :
+                   p.SkuName.Contains("Reserved Instance 1 Year") ? "1Year" :
                    "PAYG"
     })
     .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
     .OrderBy(p => p.ServiceName)
     .ThenBy(p => 
-        p.SkuName.Contains("3 Year") ? 2 :
-        p.SkuName.Contains("1 Year") ? 1 : 
+        p.SkuName.Contains("Reserved Instance 3 Year") ? 2 :
+        p.SkuName.Contains("Reserved Instance 1 Year") ? 1 : 
         0
     );
     <div class="d-flex justify-content-end mb-3">
@@ -142,6 +143,10 @@ var filteredPrices = Model.Prices
             </button>
         </form>
     </div>
+
+<div class="mb-3">
+    <small class="text-muted">Debug: Found @Model.Prices.Count() total prices, @filteredPrices.Count() after filtering</small>
+</div>
 
     <div class="table-responsive mt-4">
         <table class="table table-striped table-hover">
