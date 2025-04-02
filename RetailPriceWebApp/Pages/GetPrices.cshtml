@@ -10,15 +10,16 @@
 <h1 class="mb-4">@ViewData["Title"]</h1>
 
 <form method="get" class="mb-4">
-    <div class="row g-3">
-        <div class="col-md-4">
-            <label class="form-label">Region</label>
-            <select class="form-select" name="Location" asp-for="Location">
-                <option value="">Select Region</option>
-                <option value="westeurope">West Europe</option>
-                <option value="northeurope">North Europe</option>
-            </select>
-        </div>
+<div class="col-md-4">
+    <label class="form-label">Region</label>
+    <select class="form-select" name="Location" asp-for="Location">
+        <option value="">Select Region</option>
+        <option value="westeurope">West Europe</option>
+        <option value="northeurope">North Europe</option>
+        <option value="germanywestcentral">DE West Central</option>
+        <option value="germanynorth">DE North</option>
+    </select>
+</div>
         <div class="col-md-4">
             <label class="form-label">Service Family</label>
             <select class="form-select" name="ServiceFamily" asp-for="ServiceFamily">
@@ -27,7 +28,7 @@
                 <option value="Storage">Storage</option>
             </select>
         </div>
-        <div class="col-md-4">
+ <div class="col-md-4" id="vmSizeContainer">
             <label class="form-label">VM Size</label>
             <select class="form-select" name="ArmSkuName" asp-for="ArmSkuName">
                 <option value="">Select Size</option>
@@ -36,6 +37,28 @@
                 <option value="Standard_D8s_v3">D8s v3 (8 vCPU)</option>
             </select>
         </div>
+
+        <div class="col-md-4" id="storageRedundancyContainer">
+            <label class="form-label">Storage Redundancy</label>
+            <select class="form-select" name="StorageRedundancy" asp-for="StorageRedundancy">
+                <option value="">Select Redundancy</option>
+                <option value="LRS">Locally Redundant (LRS)</option>
+                <option value="ZRS">Zone Redundant (ZRS)</option>
+                <option value="GRS">Geo Redundant (GRS)</option>
+            </select>
+        </div>
+
+        <div class="col-md-4" id="storageSizeContainer">
+            <label class="form-label">Storage Size (GB)</label>
+            <input type="number" 
+                   class="form-control" 
+                   name="StorageSize" 
+                   asp-for="StorageSize" 
+                   min="1" 
+                   max="65536" 
+                   placeholder="Enter size in GB">
+        </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Calculate Prices</button>
         </div>
