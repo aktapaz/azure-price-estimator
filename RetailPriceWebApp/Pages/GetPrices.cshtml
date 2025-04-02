@@ -9,6 +9,50 @@
 
 <h1 class="mb-4">@ViewData["Title"]</h1>
 
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">Region</label>
+            <select class="form-select" name="Location" asp-for="Location">
+                <option value="">Select Region</option>
+                <option value="westeurope">West Europe</option>
+                <option value="northeurope">North Europe</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Service Family</label>
+            <select class="form-select" name="ServiceFamily" asp-for="ServiceFamily">
+                <option value="">Select Service</option>
+                <option value="Compute">Virtual Machines</option>
+                <option value="Storage">Storage</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">VM Size</label>
+            <select class="form-select" name="ArmSkuName" asp-for="ArmSkuName">
+                <option value="">Select Size</option>
+                <option value="Standard_D2s_v3">D2s v3 (2 vCPU)</option>
+                <option value="Standard_D4s_v3">D4s v3 (4 vCPU)</option>
+                <option value="Standard_D8s_v3">D8s v3 (8 vCPU)</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Calculate Prices</button>
+        </div>
+    </div>
+</form>
+
+@if (Environment.IsDevelopment())
+{
+    <div class="alert alert-info mb-4">
+        <strong>Debug Info:</strong><br/>
+        Model.Prices is @(Model.Prices == null ? "null" : "not null")<br/>
+        Count: @(Model.Prices?.Count() ?? 0)<br/>
+        Selected VM: @Model.ArmSkuName<br/>
+        Selected Region: @Model.Location
+    </div>
+}
+
 @if (Model.Prices?.Any() == true)
 {
     var culture = new CultureInfo(Model.CurrencyCode switch
@@ -23,12 +67,6 @@
         .Where(p => !string.IsNullOrEmpty(p.SkuName))
         .Where(p => p.Location.Contains(Model.Location ?? "", StringComparison.OrdinalIgnoreCase))
         .Where(p => 
-            // Handle Storage prices
-            (p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
-             (string.IsNullOrEmpty(Model.StorageRedundancy) || 
-              p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase)))
-            ||
-            // Handle VM prices
             (!p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
              p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase))
         )
@@ -49,23 +87,11 @@
         .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
         .OrderBy(p => p.ServiceName)
         .ThenBy(p => 
-            p.SkuName.Contains("Reserved Instance 3 Year", StringComparison.OrdinalIgnoreCase) ? 2 :
-            p.SkuName.Contains("Reserved Instance 1 Year", StringComparison.OrdinalIgnoreCase) ? 1 : 
+            p.SkuName.Contains("3 Year") ? 2 :
+            p.SkuName.Contains("1 Year") ? 1 : 
             0
         )
         .ToList();
-
-    @if (Environment.IsDevelopment())
-    {
-        <div class="mb-3">
-            <small class="text-muted">
-                Selected VM: @Model.ArmSkuName<br/>
-                Selected Region: @Model.Location<br/>
-                Initial Prices: @Model.Prices.Count()<br/>
-                Filtered Results: @filteredPrices.Count()
-            </small>
-        </div>
-    }
 
     <div class="d-flex justify-content-end mb-3">
         <form method="post" asp-page-handler="Export">
@@ -105,13 +131,13 @@
                         description = $"{price.SkuName} storage with {Model.StorageSize:N0} GB capacity";
                         totalCost = price.RetailPrice * (Model.StorageSize ?? 1);
                     }
-                    else if (price.SkuName.Contains("Reserved Instance 3 Year", StringComparison.OrdinalIgnoreCase))
+                    else if (price.SkuName.Contains("3 Year", StringComparison.OrdinalIgnoreCase))
                     {
                         licenseType = "Reserved Instance (3 Years)";
                         description = "3 year commitment with upfront payment required. Best value for long-term use.";
                         totalCost = price.RetailPrice * Model.UsageHours;
                     }
-                    else if (price.SkuName.Contains("Reserved Instance 1 Year", StringComparison.OrdinalIgnoreCase))
+                    else if (price.SkuName.Contains("1 Year", StringComparison.OrdinalIgnoreCase))
                     {
                         licenseType = "Reserved Instance (1 Year)";
                         description = "1 year commitment with upfront payment required. Good balance of flexibility and savings.";
