@@ -44,9 +44,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Cors": {
+            "ClosedXML": {
               "target": "Package",
-              "version": "[2.2.0, )"
+              "version": "[0.102.2, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
