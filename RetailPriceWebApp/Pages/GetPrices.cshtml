@@ -101,39 +101,36 @@
         _ => "fr-FR"
     });
 
-       var filteredPrices = Model.Prices
-        .Where(p => !string.IsNullOrEmpty(p.SkuName))
-        .Where(p => 
-            // Handle Storage prices
-            (p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
-             (string.IsNullOrEmpty(Model.StorageRedundancy) || 
-              p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase)))
-            ||
-            // Handle VM prices
-            (!p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
-             p.SkuName.Contains(Model.ArmSkuName, StringComparison.OrdinalIgnoreCase) &&
-             !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
-             !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
-             !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
-             !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase) &&
-             // Filter for specific pricing types
-             (p.SkuName.EndsWith(Model.ArmSkuName, StringComparison.OrdinalIgnoreCase) || // PAYG
-              p.SkuName.Contains("1 Year Reserved", StringComparison.OrdinalIgnoreCase) ||
-              p.SkuName.Contains("3 Year Reserved", StringComparison.OrdinalIgnoreCase))
-            )
-        )
-        .GroupBy(p => new { 
-            p.ServiceName, 
-            BaseSku = p.SkuName.Split('_')[0],
-            IsReserved = p.SkuName.Contains("Reserved")
-        })
-        .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
-        .OrderBy(p => p.SkuName)
-        .ThenBy(p => 
-            p.SkuName.Contains("3 Year") ? 2 :
-            p.SkuName.Contains("1 Year") ? 1 : 
-            0
-        );
+var filteredPrices = Model.Prices
+    .Where(p => !string.IsNullOrEmpty(p.SkuName))
+    .Where(p => 
+        // Handle Storage prices
+        (p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
+         (string.IsNullOrEmpty(Model.StorageRedundancy) || 
+          p.SkuName.Contains(Model.StorageRedundancy, StringComparison.OrdinalIgnoreCase)))
+        ||
+        // Handle VM prices
+        (!p.ServiceName.Contains("Storage", StringComparison.OrdinalIgnoreCase) &&
+         p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase) &&
+         !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
+         !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
+         !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
+         !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase))
+    )
+    .GroupBy(p => new { 
+        p.ServiceName, 
+        BaseSku = p.SkuName.Split('_')[0],
+        PriceType = p.SkuName.Contains("3 Year") ? "3Year" :
+                   p.SkuName.Contains("1 Year") ? "1Year" :
+                   "PAYG"
+    })
+    .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
+    .OrderBy(p => p.ServiceName)
+    .ThenBy(p => 
+        p.SkuName.Contains("3 Year") ? 2 :
+        p.SkuName.Contains("1 Year") ? 1 : 
+        0
+    );
     <div class="d-flex justify-content-end mb-3">
         <form method="post" asp-page-handler="Export">
             @foreach (var price in filteredPrices)
