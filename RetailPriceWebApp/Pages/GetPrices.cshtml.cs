@@ -49,42 +49,46 @@ namespace RetailPriceWebApp.Pages
 
         public List<PriceItem> Prices { get; set; } = new();
 
-        public async Task OnGetAsync()
+          public async Task OnGetAsync()
+    {
+        try
         {
-            try
+            if (!string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(ServiceFamily))
             {
-                var client = _clientFactory.CreateClient("AzureRetailPrices");
+                _logger.LogInformation($"Fetching prices for {ServiceFamily} in {Location}");
+                
+                using var client = _clientFactory.CreateClient();
+                var baseUrl = _config["AzurePriceApi:BaseUrl"];
                 var filters = new List<string>();
 
-                if (!string.IsNullOrWhiteSpace(Location))
+                // Add filters based on selected options
+                if (!string.IsNullOrEmpty(Location))
                     filters.Add($"armRegionName eq '{Location}'");
-                if (!string.IsNullOrWhiteSpace(ServiceName))
-                    filters.Add($"contains(serviceName, '{ServiceName}')");
-                if (!string.IsNullOrWhiteSpace(ServiceFamily))
-                    filters.Add($"contains(serviceFamily, '{ServiceFamily}')");
-                if (!string.IsNullOrWhiteSpace(ArmSkuName))
+                
+                if (!string.IsNullOrEmpty(ServiceFamily))
+                    filters.Add($"serviceFamily eq '{ServiceFamily}'");
+                
+                if (!string.IsNullOrEmpty(ArmSkuName))
                     filters.Add($"armSkuName eq '{ArmSkuName}'");
 
-                var filter = string.Join(" and ", filters);
-                var requestUri = $"api/retail/prices?$filter={filter}&api-version=2023-01-01-preview";
+                var filterString = string.Join(" and ", filters);
+                var url = $"{baseUrl}/prices?$filter={Uri.EscapeDataString(filterString)}";
 
-                _logger.LogInformation($"Requesting prices with URI: {requestUri}");
-
-                using var response = await client.GetAsync(requestUri);
-                
-                if (response.IsSuccessStatusCode)
+                var response = await client.GetFromJsonAsync<PriceDataResponse>(url);
+                if (response?.Items != null)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var priceData = JsonConvert.DeserializeObject<PriceDataResponse>(content);
-                    Prices = priceData?.Items ?? new List<PriceItem>();
+                    Prices = response.Items;
+                    _logger.LogInformation($"Found {Prices.Count} prices");
                 }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to retrieve prices");
-                ModelState.AddModelError("", "Failed to retrieve prices. Please try again later.");
-            }
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to fetch prices");
+            Prices = new List<PriceItem>();
+        }
+    }
+
 
         public async Task<IActionResult> OnPostExportAsync([FromForm] string[] prices)
         {
