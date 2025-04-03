@@ -30,9 +30,6 @@ namespace RetailPriceWebApp.Pages
         public string StorageRedundancy { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public decimal RetailPrice { get; set; }
-
-        [BindProperty(SupportsGet = true)]
         public string Location { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
@@ -49,45 +46,47 @@ namespace RetailPriceWebApp.Pages
 
         public List<PriceItem> Prices { get; set; } = new();
 
-          public async Task OnGetAsync()
-    {
-        try
+        public async Task OnGetAsync()
         {
-            if (!string.IsNullOrEmpty(Location) && !string.IsNullOrEmpty(ServiceFamily))
+            _logger.LogInformation("OnGet called with Location: {Location}, ServiceFamily: {ServiceFamily}, SKU: {SKU}",
+                Location, ServiceFamily, ArmSkuName);
+
+            if (!string.IsNullOrEmpty(Location))
             {
-                _logger.LogInformation($"Fetching prices for {ServiceFamily} in {Location}");
-                
-                using var client = _clientFactory.CreateClient();
-                var baseUrl = _config["AzurePriceApi:BaseUrl"];
-                var filters = new List<string>();
-
-                // Add filters based on selected options
-                if (!string.IsNullOrEmpty(Location))
-                    filters.Add($"armRegionName eq '{Location}'");
-                
-                if (!string.IsNullOrEmpty(ServiceFamily))
-                    filters.Add($"serviceFamily eq '{ServiceFamily}'");
-                
-                if (!string.IsNullOrEmpty(ArmSkuName))
-                    filters.Add($"armSkuName eq '{ArmSkuName}'");
-
-                var filterString = string.Join(" and ", filters);
-                var url = $"{baseUrl}/prices?$filter={Uri.EscapeDataString(filterString)}";
-
-                var response = await client.GetFromJsonAsync<PriceDataResponse>(url);
-                if (response?.Items != null)
+                try
                 {
-                    Prices = response.Items;
-                    _logger.LogInformation($"Found {Prices.Count} prices");
+                    using var client = _clientFactory.CreateClient();
+                    var filters = new List<string> { $"armRegionName eq '{Location}'" };
+
+                    if (!string.IsNullOrEmpty(ServiceFamily))
+                        filters.Add($"serviceFamily eq '{ServiceFamily}'");
+
+                    if (!string.IsNullOrEmpty(ArmSkuName))
+                        filters.Add($"armSkuName eq '{ArmSkuName}'");
+
+                    var filterString = string.Join(" and ", filters);
+                    var url = $"https://prices.azure.com/api/retail/prices?$filter={Uri.EscapeDataString(filterString)}";
+
+                    var response = await client.GetAsync(url);
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadFromJsonAsync<PriceDataResponse>();
+                        Prices = result?.Items ?? new List<PriceItem>();
+                        _logger.LogInformation("Found {Count} prices", Prices.Count);
+                    }
+                    else
+                    {
+                        _logger.LogError("API returned status code: {StatusCode}", response.StatusCode);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error fetching prices");
+                    Prices = new List<PriceItem>();
                 }
             }
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to fetch prices");
-            Prices = new List<PriceItem>();
-        }
-    }
 
 
         public async Task<IActionResult> OnPostExportAsync([FromForm] string[] prices)
@@ -190,7 +189,7 @@ namespace RetailPriceWebApp.Pages
 
             worksheet.Columns().AdjustToContents();
         }
-
+    
         private async Task<IActionResult> GenerateExcelFile(XLWorkbook workbook)
         {
             using var stream = new MemoryStream();
@@ -204,7 +203,7 @@ namespace RetailPriceWebApp.Pages
             );
         }
 
-        public class PriceDataResponse
+         public class PriceDataResponse
         {
             [JsonProperty("items")]
             public List<PriceItem> Items { get; set; } = new();
