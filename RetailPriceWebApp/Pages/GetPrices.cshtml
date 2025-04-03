@@ -107,29 +107,31 @@
         _ => new CultureInfo("fr-FR")
     };
 
-        var filteredPrices = Model.Prices
-        .Where(p => !string.IsNullOrEmpty(p.SkuName))
-        .Where(p => 
-            p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase) &&
-            !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
-            !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
-            !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
-            !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase)
-        )
-        .GroupBy(p => new { 
-            p.ServiceName, 
-            p.Location,
-            PriceType = p.SkuName.Contains("3 Year") ? "3Year" :
-                       p.SkuName.Contains("1 Year") ? "1Year" :
-                       "PAYG"
-        })
-        .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
-        .OrderBy(p => 
-            p.SkuName.Contains("3 Year") ? 2 :
-            p.SkuName.Contains("1 Year") ? 1 : 
-            0
-        )
-        .ToList();
+var filteredPrices = Model.Prices
+    .Where(p => !string.IsNullOrEmpty(p.SkuName))
+    .Where(p => 
+        p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase) &&
+        !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
+        !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
+        !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
+        !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase)
+    )
+    .GroupBy(p => new { 
+        p.ServiceName, 
+        p.Location,
+        IsReserved = p.SkuName.Contains("Reserved"),
+        Term = p.SkuName.Contains("3 Year") ? "3Year" :
+               p.SkuName.Contains("1 Year") ? "1Year" :
+               "PAYG"
+    })
+    .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
+    .OrderBy(p => p.ServiceName)
+    .ThenBy(p => 
+        p.SkuName.Contains("3 Year") ? 2 :
+        p.SkuName.Contains("1 Year") ? 1 : 
+        0
+    )
+    .ToList();
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
