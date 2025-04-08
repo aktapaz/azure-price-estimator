@@ -97,7 +97,7 @@
     </div>
 </form>
 
-@if (Model.Prices != null && Model.Prices.Any())
+@if (Model.Prices?.Any() == true)
 {
     var culture = Model.CurrencyCode switch
     {
@@ -107,27 +107,10 @@
         _ => new CultureInfo("fr-FR")
     };
 
-        var filteredPrices = Model.Prices
+    var filteredPrices = Model.Prices
         .Where(p => !string.IsNullOrEmpty(p.SkuName))
         .Where(p => 
-            p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase) &&
-            !p.SkuName.Contains("Low Priority", StringComparison.OrdinalIgnoreCase) && 
-            !p.SkuName.Contains("Spot", StringComparison.OrdinalIgnoreCase) &&
-            !p.SkuName.Contains("AHUB", StringComparison.OrdinalIgnoreCase) &&
-            !p.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase)
-        )
-        .GroupBy(p => new { 
-            p.ServiceName, 
-            p.Location,
-            PriceType = p.SkuName.Contains("3 Year") ? "3Year" :
-                       p.SkuName.Contains("1 Year") ? "1Year" :
-                       "PAYG"
-        })
-        .SelectMany(g => g.OrderBy(p => p.RetailPrice).Take(1))
-        .OrderBy(p => 
-            p.SkuName.Contains("3 Year") ? 2 :
-            p.SkuName.Contains("1 Year") ? 1 : 
-            0
+            p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase)
         )
         .ToList();
 
@@ -144,45 +127,20 @@
                     <th>Unit</th>
                 </tr>
             </thead>
-<tbody>
-    @foreach (var price in filteredPrices)
-    {
-        string description = price.SkuName switch
-        {
-            var s when s.Contains("3 Year") => 
-                "3-year commitment with upfront payment. Best value for long-term use.",
-            var s when s.Contains("1 Year") => 
-                "1-year commitment with upfront payment. Good balance of flexibility and savings.",
-            var s when s.Contains("Reserved") => 
-                "Reserved Instance pricing. Requires commitment but offers significant savings.",
-            var s when s.Contains("Hybrid Benefit") => 
-                "Special pricing for customers with existing Windows Server licenses.",
-            _ => "Pay-as-you-go pricing. No commitment required, most flexible option."
-        };
-
-        var rowClass = price.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase) 
-            ? "table-success" 
-            : "";
-
-        <tr class="@rowClass">
-            <td>@price.ServiceName</td>
-            <td>@price.ServiceFamily</td>
-            <td>
-                @price.SkuName
-                @if (price.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase))
+            <tbody>
+                @foreach (var price in filteredPrices)
                 {
-                    <span class="badge bg-success">Azure Hybrid Benefit</span>
+                    <tr>
+                        <td>@price.ServiceName</td>
+                        <td>@price.ServiceFamily</td>
+                        <td>@price.SkuName</td>
+                        <td>@price.Location</td>
+                        <td class="text-end">@price.RetailPrice.ToString("C", culture)</td>
+                        <td class="text-end">@((price.RetailPrice * Model.UsageHours).ToString("C", culture))</td>
+                        <td>@price.UnitOfMeasure</td>
+                    </tr>
                 }
-            </td>
-            <td>@price.Location</td>
-            <td class="text-end">@price.RetailPrice.ToString("C", culture)</td>
-            <td class="text-end">@((price.RetailPrice * Model.UsageHours).ToString("C", culture))</td>
-            <td>@price.UnitOfMeasure</td>
-            <td><small class="text-muted">@description</small></td>
-        </tr>
-    }
-</tbody>
-           
+            </tbody>
         </table>
     </div>
 }
