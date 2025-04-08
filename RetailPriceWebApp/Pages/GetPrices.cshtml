@@ -1,6 +1,9 @@
 @page
 @model GetPricesModel
 @using System.Globalization
+@using RetailPriceWebApp.Models
+@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment Environment
 @{
     ViewData["Title"] = "Azure Price Estimator";
 }
@@ -97,8 +100,7 @@
     </div>
 </form>
 
-@if (Model.Prices?.Any() == true)
-{
+@{
     var culture = Model.CurrencyCode switch
     {
         "EUR" => new CultureInfo("fr-FR"),
@@ -108,11 +110,24 @@
     };
 
     var filteredPrices = Model.Prices
-        .Where(p => !string.IsNullOrEmpty(p.SkuName))
-        .Where(p => 
-            p.SkuName.Contains(Model.ArmSkuName ?? "", StringComparison.OrdinalIgnoreCase)
-        )
-        .ToList();
+    ?.Where(p => !string.IsNullOrEmpty(p.SkuName))
+    ?.Where(p => 
+        string.IsNullOrEmpty(Model.Location) || 
+        p.Location.Contains(Model.Location, StringComparison.OrdinalIgnoreCase)
+    )
+    ?.Where(p => 
+        string.IsNullOrEmpty(Model.ServiceFamily) || 
+        p.ServiceFamily.Contains(Model.ServiceFamily, StringComparison.OrdinalIgnoreCase)
+    )
+    ?.Where(p => 
+        string.IsNullOrEmpty(Model.ArmSkuName) || 
+        p.SkuName.Contains(Model.ArmSkuName, StringComparison.OrdinalIgnoreCase)
+    )
+    ?.ToList() ?? new List<PriceItem>();
+}
+
+@if (Model.Prices?.Any() == true)
+{
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -142,5 +157,16 @@
                 }
             </tbody>
         </table>
+    </div>
+}@if (Environment.IsDevelopment())
+{
+    <div class="alert alert-info mb-3">
+        <strong>Debug Info:</strong><br/>
+        Location: @Model.Location<br/>
+        Service Family: @Model.ServiceFamily<br/>
+        Service Name: @Model.ServiceName<br/>
+        ARM SKU: @Model.ArmSkuName<br/>
+        Initial Price Count: @(Model.Prices?.Count() ?? 0)<br/>
+        Filtered Price Count: @(filteredPrices?.Count() ?? 0)
     </div>
 }

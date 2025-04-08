@@ -46,47 +46,36 @@ namespace RetailPriceWebApp.Pages
 
         public List<PriceItem> Prices { get; set; } = new();
 
-        public async Task OnGetAsync()
-        {
-            _logger.LogInformation("OnGet called with Location: {Location}, ServiceFamily: {ServiceFamily}, SKU: {SKU}",
-                Location, ServiceFamily, ArmSkuName);
+public async Task OnGetAsync()
+{
+    try
+    {
+        using var client = _clientFactory.CreateClient();
+        var baseUrl = "https://prices.azure.com/api/retail/prices";
+        var filters = new List<string>();
 
-            if (!string.IsNullOrEmpty(Location))
-            {
-                try
-                {
-                    using var client = _clientFactory.CreateClient();
-                    var filters = new List<string> { $"armRegionName eq '{Location}'" };
+        if (!string.IsNullOrEmpty(Location))
+            filters.Add($"armRegionName eq '{Location}'");
+        
+        if (!string.IsNullOrEmpty(ServiceFamily))
+            filters.Add($"serviceFamily eq '{ServiceFamily}'");
 
-                    if (!string.IsNullOrEmpty(ServiceFamily))
-                        filters.Add($"serviceFamily eq '{ServiceFamily}'");
+        var filterString = filters.Any() 
+            ? "?$filter=" + Uri.EscapeDataString(string.Join(" and ", filters))
+            : "";
 
-                    if (!string.IsNullOrEmpty(ArmSkuName))
-                        filters.Add($"armSkuName eq '{ArmSkuName}'");
+        var url = baseUrl + filterString;
+        _logger.LogInformation($"Fetching prices from: {url}");
 
-                    var filterString = string.Join(" and ", filters);
-                    var url = $"https://prices.azure.com/api/retail/prices?$filter={Uri.EscapeDataString(filterString)}";
-
-                    var response = await client.GetAsync(url);
-                    
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var result = await response.Content.ReadFromJsonAsync<PriceDataResponse>();
-                        Prices = result?.Items ?? new List<PriceItem>();
-                        _logger.LogInformation("Found {Count} prices", Prices.Count);
-                    }
-                    else
-                    {
-                        _logger.LogError("API returned status code: {StatusCode}", response.StatusCode);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error fetching prices");
-                    Prices = new List<PriceItem>();
-                }
-            }
-        }
+        var response = await client.GetFromJsonAsync<PriceDataResponse>(url);
+        Prices = response?.Items ?? new List<PriceItem>();
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Failed to fetch prices");
+        Prices = new List<PriceItem>();
+    }
+}
 
 
         public async Task<IActionResult> OnPostExportAsync([FromForm] string[] prices)
