@@ -182,14 +182,7 @@
         </tr>
     }
 </tbody>
-            <tfoot>
-                <tr class="table-light">
-                    <td colspan="4" class="text-end"><strong>Total:</strong></td>
-                    <td class="text-end"><strong>@filteredPrices.Sum(p => p.RetailPrice).ToString("C", culture)</strong></td>
-                    <td class="text-end"><strong>@(filteredPrices.Sum(p => p.RetailPrice) * Model.UsageHours).ToString("C", culture)</strong></td>
-                    <td></td>
-                </tr>
-            </tfoot>
+           
         </table>
     </div>
 }
