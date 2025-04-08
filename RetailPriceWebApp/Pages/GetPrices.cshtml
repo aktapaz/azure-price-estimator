@@ -144,34 +144,52 @@
                     <th>Unit</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var price in Model.Prices)
-                {
-                    string description = price.SkuName switch
-                    {
-                        var s when s.Contains("3 Year") => 
-                            "3-year commitment with upfront payment. Best value for long-term use.",
-                        var s when s.Contains("1 Year") => 
-                            "1-year commitment with upfront payment. Good balance of flexibility and savings.",
-                        var s when s.Contains("Reserved") => 
-                            "Reserved Instance pricing. Requires commitment but offers significant savings.",
-                        var s when s.Contains("Hybrid Benefit") => 
-                            "Special pricing for customers with existing Windows Server licenses.",
-                        _ => "Pay-as-you-go pricing. No commitment required, most flexible option."
-                    };
+<tbody>
+    @foreach (var price in filteredPrices)
+    {
+        string description = price.SkuName switch
+        {
+            var s when s.Contains("3 Year") => 
+                "3-year commitment with upfront payment. Best value for long-term use.",
+            var s when s.Contains("1 Year") => 
+                "1-year commitment with upfront payment. Good balance of flexibility and savings.",
+            var s when s.Contains("Reserved") => 
+                "Reserved Instance pricing. Requires commitment but offers significant savings.",
+            var s when s.Contains("Hybrid Benefit") => 
+                "Special pricing for customers with existing Windows Server licenses.",
+            _ => "Pay-as-you-go pricing. No commitment required, most flexible option."
+        };
 
-                    <tr>
-                        <td>@price.ServiceName</td>
-                        <td>@price.ServiceFamily</td>
-                        <td>@price.SkuName</td>
-                        <td>@price.Location</td>
-                        <td class="text-end">@price.RetailPrice.ToString("C", culture)</td>
-                        <td class="text-end">@((price.RetailPrice * Model.UsageHours).ToString("C", culture))</td>
-                        <td>@price.UnitOfMeasure</td>
-                        <td><small class="text-muted">@description</small></td>
-                    </tr>
+        var rowClass = price.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase) 
+            ? "table-success" 
+            : "";
+
+        <tr class="@rowClass">
+            <td>@price.ServiceName</td>
+            <td>@price.ServiceFamily</td>
+            <td>
+                @price.SkuName
+                @if (price.SkuName.Contains("Hybrid Benefit", StringComparison.OrdinalIgnoreCase))
+                {
+                    <span class="badge bg-success">Azure Hybrid Benefit</span>
                 }
-            </tbody>
+            </td>
+            <td>@price.Location</td>
+            <td class="text-end">@price.RetailPrice.ToString("C", culture)</td>
+            <td class="text-end">@((price.RetailPrice * Model.UsageHours).ToString("C", culture))</td>
+            <td>@price.UnitOfMeasure</td>
+            <td><small class="text-muted">@description</small></td>
+        </tr>
+    }
+</tbody>
+            <tfoot>
+                <tr class="table-light">
+                    <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                    <td class="text-end"><strong>@filteredPrices.Sum(p => p.RetailPrice).ToString("C", culture)</strong></td>
+                    <td class="text-end"><strong>@(filteredPrices.Sum(p => p.RetailPrice) * Model.UsageHours).ToString("C", culture)</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 }
